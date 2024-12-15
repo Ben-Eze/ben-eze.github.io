@@ -1,0 +1,115 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth; /* Smooth scrolling effect */
+}
+
+body {
+  /* height: 100vh; */
+  font-family: Montserrat;
+  background-color: var(--background-colour);
+}
+
+section {
+  padding-top: 3rem;
+  flex-direction: column;
+  justify-self: center;
+  width: 85%;
+}
+
+h1, h2, h3, h4, h5, h6, li {
+  font-family: inherit;
+  color: var(--text-colour);
+}
+
+h1 {
+  font-size: 3rem;
+  word-spacing: 0.25rem;
+  font-weight: 600;
+}
+
+h2 {
+  font-size: 2rem;
+  font-weight: 500;
+}
+
+h3 {
+  font-size: 1.5rem;
+  font-weight: 400;
+}
+
+h4 {
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.typewriter {
+  display: flex;
+  justify-items: left;
+}
+
+.typewriter h1{
+  font-family: 'Courier New', Courier, monospace;
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing 0.3s steps(4) forwards;
+}
+
+.typewriter .char20 {
+  animation: typing 1.5s steps(20) forwards;
+}
+
+.typewriter .char12 {
+  animation: typing 0.9s steps(12) forwards;
+}
+
+@keyframes typing {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@-webkit-keyframes hue {
+  0% {
+    filter: hue-rotate(0deg);
+  }
+  100% {
+    filter: hue-rotate(360deg);
+  }
+}
+
+span.colors {
+  background-image: -webkit-linear-gradient(200deg, #ffbadf, #ffdfda);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -webkit-animation: hue 6s infinite linear;
+}
+
+span.colors:hover {
+  background-image: -webkit-linear-gradient(200deg, #ff6dbb, #ff816b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -webkit-animation: hue 6s infinite linear;
+}
+
+:root {
+  --primary-colour: #3b3b3b;
+  --secondary-colour: rgb(15, 15, 30);
+  --tertiary-colour: rgb(25, 25, 40);
+  --background-colour: rgb(0, 0, 15);
+  --accent-colour: #eebe22;
+  /* --background-colour: rgb(20, 20, 15); */
+  --text-colour: #f1f1f1;
+  --text-colour2: #a8a8a8;
+  --text-colour3: #919191;
+  --IMPERIAL-blue: #0000cd;
+}
+
