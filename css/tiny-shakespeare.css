@@ -1,0 +1,45 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+#container {
+    position: relative;
+    width: 80%;
+}
+
+#textBox {
+    width: 100%;
+    height: 100px;
+    font-size: 16px;
+    font-family: Arial, sans-serif; /* Same font */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    z-index: 2; /* Ensure it stays above */
+    position: absolute; /* Positioning on top */
+    top: 0;
+    left: 0;
+    background: transparent;
+    color: white;
+    caret-color: white;
+}
+
+#suggestionWrapper {
+    position: absolute;
+    top: 0; /* Align with textBox */
+    left: 0; /* Align with textBox */
+    width: 100%;
+    height: 100px;
+    font-size: 16px; /* Same font size */
+    font-family: Arial, sans-serif; /* Same font family */
+    padding: 10px; /* Same padding */
+    border: 1px solid transparent; /* No visible border */
+    border-radius: 5px; /* Same border-radius */
+    color: rgba(255, 255, 255, 0.5);
+    z-index: 1; /* Below the textbox */
+    pointer-events: none; /* Ensure no interference */
+    white-space: pre-wrap; /* Preserve spaces and line breaks */
+    caret-color: transparent; /* Hide caret */
+    background: transparent; /* Ensure it's overlaid seamlessly */
+}
