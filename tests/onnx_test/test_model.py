@@ -25,7 +25,7 @@ X_test = torch.tensor([[0, 1, 2, 3, 4]], dtype=torch.int64).transpose(0, 1)
 y = model(X_test)
 print(y)
 
-torch.onnx.export(model, X_test, "test_model.onnx", input_names=['input'], output_names=['output'])
+torch.onnx.export(model, X_test, "onnx/test_model.onnx", input_names=['input'], output_names=['output'])
 
 # torch.save(
 #     model.state_dict(),
