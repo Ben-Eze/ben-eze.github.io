@@ -78,7 +78,7 @@ textBox.addEventListener('keydown', (event) => {
         event.preventDefault(); // Prevent default Tab behavior
         textBox.value += autocompleteText; // Add autocomplete
         
-        if (autocompleteText.slice(-1) != ' ') {
+        if (![" ", "\n"].includes(autocompleteText.slice(-1))) {
             textBox.value += ' '; // Add a space if not already present
         }
 

@@ -1,19 +1,18 @@
-async function forward(context) {
-    let chars = ["a", "b", "c", "d", "e", "f", ".", " "];
-    // Simulate a delay
-    await new Promise(resolve => setTimeout(resolve, 100));
+import Model from "./Model.js";
 
-    return chars[Math.floor(Math.random() * chars.length)];
-}
+const model = await Model.load(
+    './assets/models/gpt_model.onnx', 
+    '.shakespeare_tokenizer.json');
 
 export default async function* nextChunk(originalContext, contextSize = 8) {
     var chunk = "";
 
     while (true) {
         var context = (originalContext + chunk).slice(-contextSize);
-        chunk += await forward(context);
+        chunk += await model.forward(context);
         yield chunk; 
-        if (chunk.slice(-1) === ".") {
+        // if ([" ", ".", ","].includes(chunk.at(-1))) {
+        if (["\n", "."].includes(chunk.at(-1))) {
             break;
         }
     }
