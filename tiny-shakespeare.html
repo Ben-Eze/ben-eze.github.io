@@ -4,9 +4,11 @@
     <title>Misc AI</title>
     <link rel="stylesheet" href="css/root.css">
     <link rel="stylesheet" href="css/nav.css">
+    <link rel="stylesheet" href="css/tiny-shakespeare.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&display=swap" rel="stylesheet">
+    <!-- <script src="https://cdn.jsdelivr.net/npm/onnxjs/dist/onnx.min.js"></script> -->
   </head>
   
   <body>
@@ -31,7 +33,17 @@
       </div>
     </nav>
     <section id="misc-AI-project">
-      <div class="typewriter"><div><h1 class="char20">Other AI/ML Projects</h1></div></div>
+      <div class="typewriter"><div><h1 class="char20">Predictive Shakespeare</h1>
+
+        <h3>Write something</h3>
+        <div id="container">
+          <div id="container">
+            <!-- Suggestion wrapper sits behind the text box -->
+            <div id="suggestionWrapper"></div>
+            <textarea id="textBox" placeholder="Type something here..."></textarea>
+        </div>
+    
+        <script type="module" src="javascript/text-completion.js"></script>
     </section>
   </body>
 </html>
