@@ -23,6 +23,7 @@ function updateUI(text, value, suggestionWrapper) {
 
 const textBox = document.getElementById('textBox');
 const suggestionWrapper = document.getElementById('suggestionWrapper');
+const container = document.getElementById('container');
 
 let autocompleteText = ''; // Current autocomplete suggestion
 let generatorController = null; // To manage the generator loop
@@ -104,11 +105,12 @@ textBox.addEventListener('scroll', () => {
 });
 
 
-// // Sync height and scrolling
-// textBox.addEventListener('input', () => {
-//     textBox.style.height = '100px'; // Reset height
-//     textBox.style.height = textBox.scrollHeight + 'px'; // Expand to fit content
+// Sync height and scrolling
+textBox.addEventListener('input', () => {
+    textBox.style.height = '100px'; // Reset height
+    textBox.style.height = textBox.scrollHeight + 'px'; // Expand to fit content
 
-//     // Match suggestionWrapper height to textBox
-//     suggestionWrapper.style.height = textBox.scrollHeight + 'px';
-// });
+    // Match suggestionWrapper height to textBox
+    suggestionWrapper.style.height = textBox.scrollHeight + 'px';
+    container.style.height = textBox.scrollHeight + 'px';
+});

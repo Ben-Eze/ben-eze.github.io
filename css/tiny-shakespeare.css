@@ -6,26 +6,7 @@ body {
 #container {
     position: relative;
     width: 80%;
-}
-
-#textBox {
-    width: 100%; /* Keep width fixed */
-    height: 100px; /* Initial height */
-    font-size: 16px;
-    font-family: Arial, sans-serif; /* Same font */
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    z-index: 2; /* Ensure it stays above */
-    position: absolute; /* Positioning on top */
-    top: 0;
-    left: 0;
-    background: transparent;
-    color: white;
-    caret-color: white;
-    resize: none; /* Prevent manual resizing */
-    overflow: hidden; /* Prevent scrollbars */
-    box-sizing: border-box; /* Includes padding in width/height calculations */
+    height: 100px;
 }
 
 
@@ -45,8 +26,11 @@ body {
     color: white;
     caret-color: white;
     resize: none; /* Prevent manual resizing */
-    overflow: hidden; /* Prevent scrollbars */
     box-sizing: border-box; /* Includes padding in width/height calculations */
+    overflow: hidden; /* Prevent visible scrollbar */
+    overflow-y: scroll; /* Allow vertical scrolling without showing the scrollbar */
+    -ms-overflow-style: none; /* For Internet Explorer and Edge */
+    scrollbar-width: none; /* For Firefox */
 }
 
 #suggestionWrapper {
@@ -66,4 +50,8 @@ body {
     white-space: pre-wrap; /* Preserve spaces and line breaks */
     caret-color: transparent; /* Hide caret */
     background: transparent; /* Ensure it's overlaid seamlessly */
+    overflow: hidden; /* Prevent visible scrollbar */
+    overflow-y: scroll; /* Allow vertical scrolling without showing the scrollbar */
+    -ms-overflow-style: none; /* For Internet Explorer and Edge */
+    scrollbar-width: none; /* For Firefox */
 }
