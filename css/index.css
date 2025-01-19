@@ -61,7 +61,8 @@
 }
 
 .title-container h1 {
-  width: 90%
+  width: 50rem;
+  text-align: center;
 }
 
 .title-container h2 {

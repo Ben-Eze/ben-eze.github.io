@@ -40,8 +40,8 @@
           <div class="title-pic">
             <div class="title-container">
               <h1>Aeronautical Engineering Student @ 
-                <a href="https://www.imperial.ac.uk/" target="_blank">
-                  <svg width="20rem" viewBox="0 0 727 80" fill="none">
+                <!-- <a href="https://www.imperial.ac.uk/" target="_blank"> -->
+                <svg width="20rem" viewBox="0 0 727 80" fill="none">
                   <path d="M301.453 0V80H353.346V66H316.622V46H350.152V32.4H316.622V14H353.346V0H301.453Z" fill="currentcolor"></path>
                   <path d="M238.397 12.9177H227.22V39.8776H238.397C247.142 39.8776 253.566 35.6376 253.566 26.3953C253.566 16.8 247.142 12.9177 238.397 12.9177ZM239.196 52.8H227.22V80H212.052V0H239.196C256.219 0 269.533 7.72706 269.533 26.4C269.533 44.8 256.121 52.8 239.196 52.8Z" fill="currentcolor"></path>
                   <path d="M485.079 0V14H503.84V66H485.079V80H537.77V66H519.009V14H537.77V0H485.079Z" fill="currentcolor"></path>
@@ -50,8 +50,8 @@
                   <path d="M674.889 0V80H726.914V66H690.058V0H674.889Z" fill="currentcolor"></path>
                   <path d="M151.908 0L132.747 47.04L113.587 0H92.0312V80H106.402V20.1882L124.764 62.4H140.731L159.093 20.1882V80H173.463V0H151.908Z" fill="currentcolor"></path>
                   <path d="M0 0V14H18.7613V66H0V80H52.6912V66H33.93V14H52.6912V0H0Z" fill="currentcolor"></path>
-                  </svg>
-                </a>
+                </svg>
+                <!-- </a> -->
               </h1>
               <h2><span class="colors">CFD</span> &middot; <span class="colors">Machine Learning</span></h2>
             </div>
@@ -73,6 +73,8 @@
           Projects
         </h2>
 
+        <h4>Here are some of the projects I've worked on (with more to be added soon...). Click on the images to find out more!</h4>
+
         <div class="project-card">
           <div class="project-card-img-div">
             <a href="fluid-sim.html">
@@ -82,10 +84,15 @@
           <div class="project-card-txt-div">
             <h3><a href="fluid-sim.html" class="sneaky-link">Interactive 2D Fluid Simulation</a></h3>
             <h4>Entranced by the beauty of turbulent smoke plumes and swirling soap bubbles, I sought to understand the physics behind fluid flow.</h4>
+
             <h4>I worked through Lorena Barba's course <a href="https://lorenabarba.com/blog/cfd-python-12-steps-to-navier-stokes/" class="sneaky-link" target="_blank">12 steps to Navier-Stokes</a>, to write a physically accurate 2D incompressible fluid solver, directly implementing the N-S equations.
             Whilst it helped develop a good understanding of the equations and a simple way to implement them, the numerical scheme is still unstable for most flow variables.</h4>
+
             <h4>Therefore I changed the solver to now implement the method presented in Jos Stam's paper <a href="http://graphics.cs.cmu.edu/nsp/course/15-464/Fall09/papers/StamFluidforGames.pdf" class="sneaky-link" target="_blank">Real-Time Fluid Dynamics for Games</a>, which is unconditionally stable and can still run in real-time.</h4>
+
             <h4>"Big whirls have little whirls, That feed on their velocity; And little whirls have lesser whirls, And so on to viscosity. - Lewis Fry Richardson</h4>
+
+            <h4><a href="https://github.com/Ben-Eze/FluidSimulator" target="_blank" class="sneaky-link">View the code on GitHub</a></h4>
           </div>
         </div>
 
@@ -96,13 +103,40 @@
             </a>
           </div>
           <div class="project-card-txt-div">
-            <h3><a href="UROP.html" class="sneaky-link">UROP: High-order mesh generation for NekMesh</a></h3>
-            <h4>As part of a 12-week research project with Imperial, I helped develop an interface between the commercial mesh generation software ANSA and the in-house high-order meshing tool NekMesh, part of the <a href="https://www.nektar.info/" class="sneaky-link">Nektar++</a> suite.</h4>
-            <h4>The interface must be able to handle high-order (up to 4th) meshes. I had to develop an algorithm for handling 'troublesome' meshes, since the particular coordinate system used doesn't allow for certain configurations.</h4>
-            <h4>I wrote <a href="assets/PDFs/UROP.pdf" target="_blank" class="sneaky-link">documentation</a>, and presented my results to end-users at RollsRoyce and developers at ANSA, summarised in <a href="assets/PDFs/powerpoint.pdf" target="_blank" class="sneaky-link">this</a> PowerPoint.
-            </h4>
-            </h4>
-              <a href="https://gitlab.nektar.info/nektar/nektar/-/merge_requests/1889" target="_blank" class="sneaky-link">View the code on GitLab</a></h4>
+            <h3><a href="UROP.html" class="sneaky-link">Research Project: High-order mesh generation</a></h3>
+
+            <h4>Check out the work that I did for my research project at Imperial, working on the meshing tool NekMesh, part of the <a href="https://www.nektar.info/" class="sneaky-link">Nektar++</a> suite. This includes <a href="https://gitlab.nektar.info/nektar/nektar/-/merge_requests/1889" target="_blank" class="sneaky-link">code</a>, a <a href="assets/PDFs/InputCGNSPresentation.pdf" target="_blank" class="sneaky-link">presentation</a> given to engineers at RollsRoyce and ANSA and <a href="https://doc.nektar.info/developerguide/latest/developer-guidech17.html" target="_blank" class="sneaky-link">documentation</a></h4>
+          </div>
+        </div>
+        
+        <div class="project-card">
+          <div>
+            <a href="tiny-shakespeare.html">
+              <img src="assets/img/misc-AI.png">
+            </a>
+          </div>
+          <div class="project-card-txt-div">
+            <h3><a href="tiny-shakespeare.html" class="sneaky-link">INTERACTIVE: Predictive Shakespeare</a></h3>
+            <h4>Play around with this interactive demo, a language model trained on the entire works of Shakespeare - who knows, maybe you could write the next great classic...</h4>
+            
+            <h4><i>Inspired by the rapid progress in LLMs such as ChatGPT and Claude, I investigated the theory behind the transformer architecture to build a character-level language model, small enough to run in real-time on a desktop!</i></h4>
+
+            <h4><a href="https://github.com/Ben-Eze/LanguageModels" target="_blank" class="sneaky-link">View the code on GitHub</a></h4>
+          </div>
+        </div>
+        
+        <div class="project-card">
+          <div>
+            <a href="digit-recognition.html">
+              <img src="assets/img/misc-AI.png">
+            </a>
+          </div>
+          <div class="project-card-txt-div">
+            <h3><a href="digit-recognition.html" class="sneaky-link">Digit Classification</a></h3>
+
+            <h4>A classic starter project to introduce onself to the world of machine learning concepts and algorithms. Check out my experiments comparing different architectures at the task of image classification.</h4>
+
+            <h4><a href="https://github.com/Ben-Eze/ImageClassification" target="_blank" class="sneaky-link">View the code on GitHub</a></h4>
           </div>
         </div>
 
@@ -118,32 +152,6 @@
             <h4>I implemented <a href="https://arxiv.org/abs/1506.02640" target="_blank" class="sneaky-link">YOLO paper</a></h4>
           </div>
         </div> -->
-
-        <div class="project-card">
-          <div>
-            <a href="digit-recognition.html">
-              <img src="assets/img/misc-AI.png">
-            </a>
-          </div>
-          <div class="project-card-txt-div">
-            <h3><a href="digit-recognition.html" class="sneaky-link">Digit Recognition</a></h3>
-            <h4>...</h4>
-          </div>
-        </div>
-
-        <div class="project-card">
-          <div>
-            <a href="tiny-shakespeare.html">
-              <img src="assets/img/misc-AI.png">
-            </a>
-          </div>
-          <div class="project-card-txt-div">
-            <h3><a href="tiny-shakespeare.html" class="sneaky-link">Predictive Shakespeare</a></h3>
-            <h4>Play around with my interactive model, trained on the entire works of Shakespeare - who knows, maybe you could write the next great classic...</h4>
-
-            <h4>Inspired by the rapid progress in LLMs such as ChatGPT and Claude, I investigated the theory behind the transformer architecture to build a character-level language model, small enough to run in real-time on a desktop!</h4>
-          </div>
-        </div>
       </div>
     </section>
 

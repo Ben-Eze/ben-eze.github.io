@@ -47,6 +47,7 @@ h4 {
   font-weight: 400;
   padding-top: 0.3rem;
   padding-bottom: 0.3rem;
+  color: var(--text-colour2);
 }
 
 .typewriter {
@@ -115,3 +116,25 @@ span.colors:hover {
   --IMPERIAL-blue: #0000cd;
 }
 
+.sneaky-link {
+  color: var(--text-colour);
+  position: relative;
+  text-decoration: none;
+  transition: text-decoration 0.5s;
+}
+
+.sneaky-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 1px; /* Thickness of the underline */
+  background-color: currentColor; /* Matches the text color */
+  opacity: 0.6;
+  transition: width 0.3s ease;
+}
+
+.sneaky-link:hover::after {
+  width: 100%;
+}

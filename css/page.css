@@ -1,0 +1,23 @@
+.para {
+    padding-top: 1rem;
+}
+
+.page-image {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    display: flex;           
+    justify-content: center; 
+    align-items: center;    
+    width: 100%;             
+}
+
+.page-image a {
+    display: block;
+    justify-content: center;
+    align-items: center;
+    width: var(--image-width, 70%);
+}
+
+.page-image img {
+    width: 100%;         
+}
