@@ -82,6 +82,11 @@ textBox.addEventListener('keydown', (event) => {
             textBox.value += ' '; // Add a space if not already present
         }
 
+        // remove new line character
+        if (textBox.value.slice(-1) === '\n') {
+            textBox.value = textBox.value.slice(0, -1);
+        }
+
         suggestionWrapper.innerHTML = textBox.value; // Update the wrapper
         autocompleteText = ''; // Reset autocomplete
 
@@ -97,3 +102,13 @@ textBox.addEventListener('keydown', (event) => {
 textBox.addEventListener('scroll', () => {
     suggestionWrapper.scrollTop = textBox.scrollTop;
 });
+
+
+// // Sync height and scrolling
+// textBox.addEventListener('input', () => {
+//     textBox.style.height = '100px'; // Reset height
+//     textBox.style.height = textBox.scrollHeight + 'px'; // Expand to fit content
+
+//     // Match suggestionWrapper height to textBox
+//     suggestionWrapper.style.height = textBox.scrollHeight + 'px';
+// });
