@@ -56,6 +56,18 @@ h4 {
   color: var(--text-colour2);
 }
 
+.dash-list {
+  list-style-type: none; /* Remove default bullets */
+  padding: 0;           /* Optional: Remove padding */
+}
+
+.dash-list li::before {
+  margin-left: 0.5rem;
+  content: "-";         
+  margin-right: 0.5em;   
+  color: var(--text-colour);
+}
+
 .typewriter {
   display: flex;
   justify-items: left;
