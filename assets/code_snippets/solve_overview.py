@@ -13,5 +13,3 @@ def solveJosStam():
     u, v = advect_velocity(u, v)     # advection
     u, v = enforce_continuity(u, v)  # as before
     u, v = velocity_BCs(u, v)        # boundary conditions
-
-    

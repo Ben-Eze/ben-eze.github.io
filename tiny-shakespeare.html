@@ -33,11 +33,17 @@
         </div>
       </div>
     </nav>
-    <section id="misc-AI-project">
-      <div class="typewriter"><div><h1 class="char20">Predictive Shakespeare</h1>
 
+    <section id="misc-AI-project">
+      <div class="typewriter"><div>
+        <h1 style="--time: 1.5s; --steps:22">Predictive Shakespeare</h1>
+      </div></div>
+
+      <script type="module" src="javascript/text-completion.js"></script>
+      
+      <div>
         <h3>Press tab for autocomplete</h3>
-        
+      
         <div id="container">
           <!-- Suggestion wrapper sits behind the text box -->
           <div id="suggestionWrapper"></div>
@@ -62,13 +68,13 @@
               <img src="assets/img/Tokenisation.png">
             </a>
           </div>
+          
           Therefore instead of seeing the array, ['T', 'o', ' ', 'b', 'e', ' ', 'o', 'r', ' ', 'n', 'o', 't', ' ', 't', 'o', ' ', 'b','e', ','], the model instead only has to process [1385, 413, 503, 625, 316, 413, 11]. There is a trade-off between vocabulary size (larger with sub-word tokenisation) and number of characters representing a given text (larger for character-level tokenisation) so a surprising amount of performance can be gained from a well-designed tokeniser.</h4>
         </div>
-        
+      </div>
 
-        <a href="" target="_blank" class="sneaky-link">XXX</a>
+      <a href="" target="_blank" class="sneaky-link">XXX</a>
     
-        <script type="module" src="javascript/text-completion.js"></script>
     </section>
   </body>
 </html>
