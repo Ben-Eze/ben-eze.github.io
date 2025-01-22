@@ -18,6 +18,10 @@ section {
   padding-top: 3rem;
   flex-direction: column;
   justify-self: center;
+  width: 85%;
+}
+
+.project-page {
   width: 70%;
 }
 
