@@ -38,6 +38,7 @@ h2 {
 }
 
 h3 {
+  padding-top: 1.2rem;
   font-size: 1.5rem;
   font-weight: 400;
 }
@@ -60,15 +61,7 @@ h4 {
   display: inline-block;
   overflow: hidden;
   white-space: nowrap;
-  animation: typing 0.3s steps(4) forwards;
-}
-
-.typewriter .char20 {
-  animation: typing 1.5s steps(20) forwards;
-}
-
-.typewriter .char12 {
-  animation: typing 0.9s steps(12) forwards;
+  animation: typing var(--time) steps(var(--steps)) forwards;
 }
 
 @keyframes typing {
@@ -109,6 +102,7 @@ span.colors:hover {
   --tertiary-colour: rgb(25, 25, 40);
   --background-colour: rgb(0, 0, 15);
   --accent-colour: #eebe22;
+  --codebox-colour: rgb(20, 20, 45);
   /* --background-colour: rgb(20, 20, 15); */
   --text-colour: #f1f1f1;
   --text-colour2: #a8a8a8;
@@ -138,3 +132,41 @@ span.colors:hover {
 .sneaky-link:hover::after {
   width: 100%;
 }
+
+/* PDF embed box */
+.iframewindow{
+  margin-top: 1rem;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  height: 80vh;
+}
+
+/* PDF embed box */
+.iframepdf{
+  height: 90%;
+  width: 70%;
+  overflow: hidden;
+}
+
+/* Code */
+.code-box {
+  display: flex;
+  width: 40rem;
+  background-color: var(--codebox-colour);
+  overflow: hidden;
+  border-radius: 0.3rem;
+  margin: 0.5rem;
+}
+
+code {
+  color: var(--text-colour);
+}
+
+pre code {
+  background: none !important;
+}
+
+.latex{
+  color: var(--text-colour);
+} 

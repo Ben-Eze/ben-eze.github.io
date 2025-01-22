@@ -4,9 +4,12 @@
     <title>Fluid Sim</title>
     <link rel="stylesheet" href="css/root.css">
     <link rel="stylesheet" href="css/nav.css">
+    <link rel="stylesheet" href="css/page.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/vs2015.min.css">
+    <script src="javascript/utils/insert-text.js"></script>
   </head>
   
   <body>
@@ -30,8 +33,263 @@
         </div>
       </div>
     </nav>
+
     <section id="fluid-sim-project">
-      <div class="typewriter"><div><h1 class="char12">2D Fluid Sim</h1></div></div>
+      <div class="typewriter"><div>
+        <h1 style="--time: 0.8s; --steps:12">2D Fluid Sim</h1>
+      </div></div>
+
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script>
+
+      <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+      <div>
+        <h3>Introduction</h3>
+        <h4>The Navier-Stokes (NS) equations are the equations that govern fluid flow in most conventional fluids, and are infamously tricky to solve. I will attempt to summarise two potential methods, although one is encouraged to explore the resources provided further for a more detailed explanation.</h4>
+        <p class="latex">
+          \[
+            \frac{\partial \mathbf{u}}{\partial t} + (\mathbf{u} \cdot \nabla) \mathbf{u} = -\frac{1}{\rho} \nabla p + \nu \nabla^2 \mathbf{u} + \mathbf{F}
+          \]
+          \[
+            \frac{\partial \rho}{\partial t} + \nabla \cdot (\rho \mathbf{u}) = 0
+          \]
+        </p>
+        <h4>For a first understanding of the finite difference method to approximating partial differential equations, I cannot recommend Lorena Barba's course <a href="https://lorenabarba.com/blog/cfd-python-12-steps-to-navier-stokes/" class="sneaky-link" target="_blank">"12 steps to Navier-Stokes"</a> enough. It breaks down the components of the NS equations into its components, namely diffusion, advection and pressure projection, finally combining all the pieces to have a physically-accurate fluid solver. However, whilst it helps develop a good understanding of the equations and a simple way to implement them, the numerical scheme quickly becomes unstable for most 'interesting' flow regimes.</h4>
+
+        <div class="page-image" style="--image-width: 20rem;">
+          <a href="https://lorenabarba.com/blog/cfd-python-12-steps-to-navier-stokes/" target="_blank">
+            <img src="assets/img/12 steps to NS.png">
+          </a>
+        </div>
+  
+        <!-- <h3>Jos Stam's "Real-Time Fluid Dynamics for Games"</h3 -->
+        <h4>Therefore I modified the solver to implement the method presented in Jos Stam's paper <a href="http://graphics.cs.cmu.edu/nsp/course/15-464/Fall09/papers/StamFluidforGames.pdf" class="sneaky-link" target="_blank">Real-Time Fluid Dynamics for Games</a>, which is unconditionally stable, allowing the modelling of turbulent flow in real-time. Instead of directly implementing the NS equations, the methods in this paper prioritise visual quality - the compromise for being <i>unconditionally</i> stable is physical accuracy.</h4>
+
+        <div class="page-image" style="--image-width: 40rem;">
+          <a href="http://graphics.cs.cmu.edu/nsp/course/15-464/Fall09/papers/StamFluidforGames.pdf" target="_blank">
+            <img src="assets/img/jos-stam2.png">
+          </a>
+        </div>
+
+        <h3>Differences</h3>
+        <h4>A quick summary of the different methods can be shown in the following code:</h4> 
+        
+                <div class="code-box">
+                  <pre><code id="solve_overview" class="language-python"></code></pre>
+                  <script>
+                    insertText('assets/code_snippets/solve_overview.py', 'solve_overview');
+                  </script>
+                </div>
+
+        <div class="code-box">
+          <pre><code id="code_overview" class="language-python"></code></pre>
+          <script>
+            insertText('assets/code_snippets/code_overview.py', 'code_overview');
+          </script>
+        </div>
+
+        <h4>In short, the method presented by Barba directly applies the continuity and momentum equations, whereas Stam's implementation splits up diffusion and convection, enforcing continuity after each step <i>and</i> there is no mention of pressure, although as we will see later, we can interpret <code>enforce_continuity()</code> as calculating pressure indirectly.</h4>
+
+        <h3>Notation</h3>
+        <h4>When discritising the NS equations, we must consider the variation of variables (say <span class="latex">\( f \)</span>) in space and time. We do this with the subscripts <span class="latex">\( i, j \)</span>, for the <span class="latex">\( x \)</span>- and <span class="latex">\( y \)</span>-coordinates, and superscript <span class="latex">\( n \)</span> for the time index. This results in <span class="latex">\( f_{i, j}^{n} \)</span>, though for the sake of visual clarity, these may sometimes be left out, in which case the default values of <span class="latex">\( i, j, n \)</span> should be assumed (ie. instead of <span class="latex">\( \pm 1 \)</span>).</h4>
+
+        <h4>Also note that the where the velocity vector <span class="latex">\( \mathbf{u} := [u, t]^\top\)</span> is used in an equation, it is equally valid for <span class="latex">\( u \)</span> and <span class="latex">\( v \)</span>, due to symmetry.</h4>
+        
+
+        <h3>Finite-Difference Summary</h3>
+        <h4>Both methods use the finite-difference method to approximate partial derivative terms in the equation. In short, it uses the definition of the derivative, but instead of taking a limit, you just assume <span class="latex">\( \Delta x, \Delta y, \Delta t \approx 0 \)</span>. </h4> 
+        
+        <p class="latex">
+          \[
+            \frac{\partial f}{\partial x} = \lim_{h \to 0} \left[ \frac{f(x + h) - f(x)}{h} \right] \approx \frac{f(x + \Delta x) - f(x)}{\Delta x}
+          \]
+        </p>
+        
+        <h4>For spatial derivatives of some scalar quantity <span class="latex">\( f(x, y) \)</span>, we can approximate</h4>
+
+        <p class="latex">
+          \[
+            \left( \frac{\partial f}{\partial x} \right)_{i,j} \approx \frac{f_{i+1, j} - f_{i, j}}{\Delta x}\quad \text{,} \quad
+            \left( \frac{\partial f}{\partial y} \right)_{i,j} \approx \frac{f_{i, j+1} - f_{i, j}}{\Delta y}
+          \]
+        </p>
+        
+        <h4>This is called the first-order forward difference method, 'first' because we are approximating the first derivative and 'forward' because we are using the 'next' spatial coordinate (ie. <span class="latex">\( i+1 \)</span> or <span class="latex">\( j+1 \)</span>). The backward difference uses <span class="latex">\( f_{i} - f_{i-1} \)</span>, but is otherwise equivalent in space and choice between the two is arbitrary. However we could also use the first order central difference, namely</h4>
+
+        <p class="latex">
+          \[
+            \left( \frac{\partial f}{\partial x} \right)_{i,j} \approx \frac{f_{i+1, j} - f_{i-1, j}}{2\Delta x}\quad \text{,} \quad
+            \left( \frac{\partial f}{\partial y} \right)_{i,j} \approx \frac{f_{i, j+1} - f_{i, j-1}}{2\Delta y}
+          \]
+        </p>  
+
+        <h4>To decide which to use, we must consider the physics we are trying to represent - the central difference is symmetric, so should be used for symmetric processes (eg. pressure gradients), whereas the forward/backward difference are asymmetric (eg. for convection).</h4>
+
+        <h4>In time, we use the forward difference method, since we need an equation linking the <i>next</i> value, <span class="latex">\( f^{n+1} \)</span>, with what we already know, <span class="latex">\( f^n \)</span>:</h4>
+
+        <p class="latex">
+          \[
+            \left( \frac{\partial f}{\partial t} \right) \approx \frac{f^{n+1} - f^{n}}{\Delta t}
+          \]
+        </p>
+
+        <h4>Therefore if we have a partial differential equation, say <span class="latex">\( \frac{\partial f}{\partial t} = k \)</span>, we can simply find <span class="latex">\( f^{n+1} \)</span>:</h4>
+
+        <p class="latex">
+          \[
+            f^{n+1} = f^{n} + k \Delta t
+          \]
+        </p>
+
+        <h4>In reality, however, the <span class="latex">\( k \)</span> will be more a function of space and time, and we will have to consider stability.</h4>
+
+        <h3>Diffusion</h3>
+        <h4>Diffusion is implemented in much the same way between the two methods. This is the <span class="latex">\( \nu \nabla^2 \mathbf{u} \)</span> term in the NS equation and we can find this using the Second-Order Central Difference scheme, a simple extension of the first-order methods presented above. (Note: for simplicity, we assume from now on that <span class="latex">\( \Delta x = \Delta y \).</span>)</h4>
+        <p class="latex">
+          \[
+            \nu \nabla^2 \mathbf{u} = \frac{\nu}{\Delta x^2}(\mathbf{u}_{i+1, j} + \mathbf{u}_{i-1, j} + \mathbf{u}_{i, j+1} + \mathbf{u}_{i, j-1} - 4 \mathbf{u}_{i, j})
+          \]
+        </p>
+
+        <h4>In Stam's method, we apply diffusion using </h4>
+
+        <p class="latex">
+          \[
+            \frac{\partial \mathbf{u}}{\partial t} = \nu \nabla^2 \mathbf{u}
+          \]
+        </p>
+
+        <h4>However, we now have a choice between Explicit and Implicit Euler methods. Explicit Euler is the simplest, given by </h4>
+
+        <p class="latex">
+          \[
+            \begin{align}
+            \mathbf{u}_{i, j}^{n+1} &= \mathbf{u}_{i, j}^{n} + \frac{\nu \Delta t}{\Delta x^2}\nabla \mathbf{u}_{i, j}^n \\
+             &= \mathbf{u}_{i, j}^{n} + \frac{\nu \Delta t}{\Delta x^2}(\mathbf{u}^n_{i+1, j} + \mathbf{u}^n_{i-1, j} + \mathbf{u}^n_{i, j+1} + \mathbf{u}^n_{i, j-1} - 4 \mathbf{u}^n_{i, j})
+            \end{align}
+          \]
+        </p>
+
+        <h4>This is simple since we already know <span class="latex">\( \mathbf{u}^n \).</span> at every spatial coordinate. However it is also unstable above a certain <span class="latex">\( \frac{\nu \Delta t}{\Delta x^2} \)</span> value, determined by the Courant-Friedrichs-Lewy (CFL) condition (ie. the speed of diffusion cannot be greater than one grid cell per time step). Instead of asking 'what is <span class="latex">\( \mathbf{u}^{n+1} \)</span> given <span class="latex">\( \mathbf{u}^n \)</span>', we can ask 'what value of <span class="latex">\( \mathbf{u}^{n+1} \)</span> would give <span class="latex">\( \mathbf{u}^n \)</span>?'. This is the Implicit Euler method:
+        </h4>
+
+        <p class="latex">
+          \[
+            \begin{align}
+            \mathbf{u}_{i, j}^{n} &= \mathbf{u}_{i, j}^{n+1} - \frac{\nu \Delta t}{\Delta x^2}\nabla \mathbf{u}^{n+1} \\
+            \mathbf{u}_{i, j}^{n+1} &= \mathbf{u}_{i, j}^{n} + \frac{\nu \Delta t}{\Delta x^2}(\mathbf{u}^{n+1}_{i+1, j} + \mathbf{u}^{n+1}_{i-1, j} + \mathbf{u}^{n+1}_{i, j+1} + \mathbf{u}^{n+1}_{i, j-1} - 4 \mathbf{u}^{n+1}_{i, j})\\
+            &= \frac{\mathbf{u}_{i, j}^{n} + \frac{\nu \Delta t}{\Delta x^2}(\mathbf{u}^{n+1}_{i+1, j} + \mathbf{u}^{n+1}_{i-1, j} + \mathbf{u}^{n+1}_{i, j+1} + \mathbf{u}^{n+1}_{i, j-1})}{1 + 4 \frac{\nu \Delta t}{\Delta x^2}}
+            \end{align}
+          \]
+
+        <h4>The issue is, now we are solving for the unknown <span class="latex">\( \mathbf{u}_{i, j}^{n+1} \)</span> in terms of other unknowns <span class="latex">\( \mathbf{u}^{n+1}_{i+1, j}, \mathbf{u}^{n+1}_{i-1, j}, \mathbf{u}^{n+1}_{i, j+1}, \mathbf{u}^{n+1}_{i, j-1} \)</span>. This issue is resolved by solving iteratively, using the Jacobi method:</h4>
+
+        <div class="code-box">
+          <pre><code id="IE_diffusion" class="language-python"></code></pre>
+          <script>
+            insertText('assets/code_snippets/IE_diffusion.py', 'IE_diffusion');
+          </script>
+        </div>
+
+        <h4>This is now <i>unconditionally</i> stable. This iterative method is well-suited to array operations in <code>numpy</code> and easily parallelisable, unlike the Gauss-Seidel method.</h4>
+
+        <!-- TODO: add a nice diagram of diffusion -->
+
+        <h4>On the other hand, Barba's implementation waits to combine the diffusion term with the convection and pressure gradient terms before taking a step forwards in time.</h4>
+
+        <h3>Convection</h3>
+        <h4>This is the term <span class="latex">\( (\mathbf{u} \cdot \nabla) \mathbf{u} \)</span> in the NS equations, and the step in which the two methods differ the most. Barba simply proposes using the backward difference method. The <span class="latex">\( x \)</span>- and <span class="latex">\( y \)</span>-components are given respectively by </h4>
+
+        <p class="latex">
+          \[
+            \begin{align}
+              u \frac{\partial u}{\partial x} + v \frac{\partial u}{\partial y}
+              &= u_{i, j} \frac{u_{i, j} - u_{i-1, j}}{\Delta x} + v_{i, j} \frac{u_{i, j} - u_{i, j-1}}{\Delta y} \\
+              u \frac{\partial v}{\partial x} + v \frac{\partial v}{\partial y} &= u_{i, j} \frac{v_{i, j} - v_{i-1, j}}{\Delta x} + v_{i, j} \frac{v_{i, j} - v_{i, j-1}}{\Delta y}
+            \end{align}
+          \]
+        </p>
+
+        <h4>This is only conditionally stable though, again due to the CFL condition.</h4>
+
+        <h4>Stam's method, however, uses the Semi-Lagrangian method, which is a way of solving the advection equation <span class="latex">\( \frac{\partial \mathbf{u}}{\partial t} + (\mathbf{u} \cdot \nabla) \mathbf{u} = 0 \)</span> by following the path of the fluid particles. This is done by interpolating the velocity field at the previous time step to find the new position of the particle, and then interpolating the velocity field at this new position to find the new velocity of the particle. This is done using the bilinear interpolation.</h4>
+
+        <!-- TODO: add a nice diagram -->
+
+        <div class="code-box">
+          <pre><code id="advectionJos" class="language-python"></code></pre>
+          <script>
+            insertText('assets/code_snippets/advectionJos.py', 'advectionJos');
+          </script>
+        </div>
+
+        <h4>Though this is significantly more involved than directly discretising the <span class="latex">\( (\mathbf{u} \cdot \nabla)\mathbf{u} \)</span> term, each step is not too complex and the benefit is and unconditionally stable solution.</h4>
+
+        <h3>Pressure Projection</h3>
+        <h4>A full derivation of Barba's method can be found in <a href="https://www.youtube.com/watch?v=P7laeOUpDoc&list=PL30F4C5ABCE62CB61" class="sneaky-link" target="_blank">lecture 11</a> of her series, but in short, taking the divergence of the momentum equation and enforcing continuity results in the following Poisson equation</h4>
+        <p class="latex">
+          \[
+            \nabla \cdot \left( \frac{\partial \mathbf{u}}{\partial t} + (\mathbf{u} \cdot \nabla) \mathbf{u} \right) = \nabla \cdot \left( -\frac{1}{\rho} \nabla p + \nu \nabla^2 \mathbf{u} + \mathbf{F} \right) \quad , \quad \frac{\partial \rho}{\partial t} + \nabla \cdot (\rho \mathbf{u}) = 0
+          \]
+          \[
+            \Rightarrow \nabla^2 p = -\rho (\frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 v}{\partial y^2} + 2 \frac{\partial^2 u}{\partial y \partial x})
+          \]
+        </p>
+
+        <h4>This is then solved iteratively. This is because each time the momentum equation is solved, the new velocity field <span class="latex">\( \mathbf{u}^{n+1} \)</span> will no longer be entirely divergence-free - the pressure is modified to ensure this.</h4>
+
+        <h4>Stam's method achieves the same aim of clearing divergence, using Helmholtz decomposition, just with no direct mention of pressure. Helmholtz's theory states that any vector field can be decomposed into curl-free and divergence-free components and we combnine it with  the vector calculus identity <span class="latex">\( \nabla \cdot (\nabla \times \mathbf{F}) = 0 \)</span>:</h4>
+
+        <p class="latex">
+          \[
+          \begin{align}
+            \mathbf{u} &= \mathbf{u}_{div\ free} + \mathbf{u}_{curl\ free} \\
+            & = (\nabla \times \mathbf{F}) + \nabla \phi\\
+            \nabla \cdot \mathbf{u} &= \nabla^2 \phi
+          \end{align}
+          \]
+        </p>
+
+        <h4><span class="latex">\( \phi \)</span> is found iteratively, using the Jacobi method again, which allows one to easily find the divergence-free component with a basic subtraction. Intuitively, the pressure information must be encoded in the <span class="latex">\( \phi \)</span> term.</h4> 
+
+        <div class="code-box">
+          <pre><code id="Helmholtz" class="language-python"></code></pre>
+          <script>
+            insertText('assets/code_snippets/Helmholtz.py', 'Helmholtz');
+          </script>
+        </div>
+
+        <h4>Comparing the two methods, we conclude that</h4>
+
+        <p class="latex">
+          \[
+              \mathbf{u}^{n+1} = \mathbf{u}^{n} - \nabla \phi = \mathbf{u}^n - \frac{\Delta t}{\rho}\nabla p \\
+          \]
+          \[
+              \Rightarrow \phi = \frac{p \Delta t}{\rho}
+          \]
+        </p>
+
+        <h3>Theory Conclusions</h3>
+        <h4>Both methods have their advantages: Barba's method is simpler to implement and understand, but is limited in the flow regimes it can model. Stam's method is more complex, but is unconditionally stable so can model more interesting flow regimes. Whilst their individual publications go more in-depth into implementation and derivations of the two approaches, hopefully this comparison has shown that they are more similar than they initially appear - their differences lie mainly in how one goes about encoding a complex physical system in code.</h4>
+
+        <h3>My Code</h3>
+        <h4>My implementation of the two methods can be found on <a href="https://github.com/Ben-Eze/FluidSimulator" target="_blank" class="sneaky-link">GitHub</a>. In the current iteration, effort has been put into making the code highly modular, for ease of comparison between different numerical methods. This means that the end-user should only have to modify the <code>solver_config.py</code> file.</h4>
+
+        <h4>Additional features include user interaction with the fluid (adding smoke and being able to disturb the velocity field), video recording functionality, the addition of aerofoils to the scene and boundary conditions. Expect to see a part 2, which will focus much more on the non-physics aspect of the code.</h4>
+
+        <!-- <h3>Latex</h3>
+        <h4>Here is an inline equation: <span class="latex">\( E = mc^2 \)</span></h4>
+        <p>Here is a block equation:</p>
+        <p class="latex">
+          \[
+            \int_a^b f(x) \, dx = F(b) - F(a)
+          \]
+        </p>
+
+        <h4>"Big whirls have little whirls, That feed on their velocity; And little whirls have lesser whirls, And so on to viscosity. - Lewis Fry Richardson</h4> -->
+      </div>
     </section>
   </body>
 </html>
