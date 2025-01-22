@@ -10,6 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@latest/dist/ort.min.js"></script>
+    <script src="javascript/utils/insert-text.js"></script>
   </head>
   
   <body>
@@ -34,14 +35,16 @@
       </div>
     </nav>
 
-    <section id="misc-AI-project">
+    <section id="misc-AI-project" class="project-page">
+      <script type="module" src="javascript/text-completion.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script>
+
       <div class="typewriter"><div>
         <h1 style="--time: 1.5s; --steps:22">Predictive Shakespeare</h1>
       </div></div>
 
-      <script type="module" src="javascript/text-completion.js"></script>
-      
-      <div>
+      <div class="demo">
         <h3>Press tab for autocomplete</h3>
       
         <div id="container">
@@ -52,28 +55,42 @@
         <div>
           <h4>Note: this is still an experimental feature. I take no legal responsibility for medical or professional advice that ShakespeareGPT gives.</h4>
         </div>
-
-        <div class="para">
-          <h3>How it works</h3>
-          <h4>ShakespeareGPT is, as the name suggests, a transformer-based model. It uses character-level tokenisation and was trained on the  <a href="https://raw.githubusercontent.com/karpathy/char-rnn/master/data/tinyshakespeare/input.txt" target="_blank" class="sneaky-link">complete works of Shakespeare</a>. The architecture was based off the infamous paper <a href="https://arxiv.org/abs/1706.03762" target="_blank" class="sneaky-link">Attention is All You Need</a>, though the model was scaled down to train in reasonable time on a CPU and run on a desktop. The idea came from the excellent <a href="https://www.youtube.com/watch?v=VMj-3S1tku0&list=PLAqhIrjkxbuWI23v9cThsA9GvCAUhRvKZ" target="_blank" class="sneaky-link">series of lectures</a> from Andrej Karpathy, which walks one through the core concepts underpinning all machine learning today</h4>
-        </div>
-        <div class="para">
-          <h3>Future Improvements...</h3>
-          <h4>As I am sure you can see, the model in its current state is likely not going to be winning an Oscar for best screenplay anytime soon, although most of the key ideas in the paper are implemented. The main areas for improvement are tokenisation, scale and improved scaling</h4> 
-
-          <h4>The biggest difference between this model and current LLMs is that they all use more advanced tokenisation. In short tokenisation is the process of subdividing a block of text into smaller chunks that can be read and then generated. The most common algorithm for this is <a href="http://www.pennelynn.com/Documents/CUJ/HTML/94HTML/19940045.HTM" target="_blank" class="sneaky-link">byte-pair encoding</a>, originally introduced back in 1994, but popularised for ML by <a href="https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf" target="_blank" class="sneaky-link">OpenAI in 2019</a>. You can investigate the tokenisation used in OpenAI's models <a href="https://platform.openai.com/tokenizer" target="_blank" class="sneaky-link">here</a>. 
-            
-          <div class="page-image" style="--image-width: 40rem;">
-            <a href="https://platform.openai.com/tokenizer" target="_blank">
-              <img src="assets/img/Tokenisation.png">
-            </a>
-          </div>
-          
-          Therefore instead of seeing the array, ['T', 'o', ' ', 'b', 'e', ' ', 'o', 'r', ' ', 'n', 'o', 't', ' ', 't', 'o', ' ', 'b','e', ','], the model instead only has to process [1385, 413, 503, 625, 316, 413, 11]. There is a trade-off between vocabulary size (larger with sub-word tokenisation) and number of characters representing a given text (larger for character-level tokenisation) so a surprising amount of performance can be gained from a well-designed tokeniser.</h4>
-        </div>
       </div>
 
-      <a href="" target="_blank" class="sneaky-link">XXX</a>
+      <div>
+        <h3>How it works</h3>
+        <h4>ShakespeareGPT is, as the name suggests, a transformer-based model. It uses character-level tokenisation and was trained on the  <a href="https://raw.githubusercontent.com/karpathy/char-rnn/master/data/tinyshakespeare/input.txt" target="_blank" class="sneaky-link">complete works of Shakespeare</a>. The architecture was based off the infamous paper <a href="https://arxiv.org/abs/1706.03762" target="_blank" class="sneaky-link">"Attention is All You Need"</a>, though the model was scaled down to train in reasonable time on a CPU and run on a desktop. The idea came from the excellent <a href="https://www.youtube.com/watch?v=VMj-3S1tku0&list=PLAqhIrjkxbuWI23v9cThsA9GvCAUhRvKZ" target="_blank" class="sneaky-link">series of lectures</a> from Andrej Karpathy, which walks one through the core concepts underpinning all machine learning today.</h4>
+
+        <div class="page-image" style="--image-width: 15rem;">
+          <a href="https://platform.openai.com/tokenizer" target="_blank">
+            <img src="assets/img/Transformer.png">
+          </a>
+        </div>
+
+        <h3>Code</h3>
+        <h4>Code can all be found <a href="https://github.com/Ben-Eze/LanguageModels" target="_blank" class="sneaky-link">here</a>. The model is originally trained in using <a href="https://pytorch.org/" target="_blank" class="sneaky-link">Pytorch</a> and the code for this is in <code>train.py</code>. Then to enable the model to be run on the browser, the <a href="https://onnxruntime.ai/" target="_blank" class="sneaky-link">ONNX runtime</a> library is used - code for this can be found in <code>export.py</code>. This process was surprisingly painless and once a better model has been trained, it is as simple as pasting in a new <code>.onnx</code> model file and <code>.json</code> tokeniser file. The code to run this browser (plus the everything on this website) is hosted on my <a href="https://github.com/Ben-Eze/ben-eze.github.io" target="_blank" class="sneaky-link">GitHub</a>.</h4>
+
+        <h3>Future Improvements...</h3>
+        <h4>As I am sure you can see, the model in its current state is likely not going to be winning an Oscar for best screenplay any time soon, although most of the key ideas in the paper are implemented. The main areas for improvement are tokenisation, scale and improved training</h4> 
+
+        <h4>The biggest difference between this model and current LLMs is that they all use more advanced tokenisation. In short tokenisation is the process of subdividing a block of text into smaller chunks that can be read and then generated. The most common algorithm for this is <a href="http://www.pennelynn.com/Documents/CUJ/HTML/94HTML/19940045.HTM" target="_blank" class="sneaky-link">byte-pair encoding</a>, originally introduced back in 1994, but popularised for ML by <a href="https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf" target="_blank" class="sneaky-link">OpenAI in 2019</a>. You can investigate the tokenisation used in OpenAI's models <a href="https://platform.openai.com/tokenizer" target="_blank" class="sneaky-link">here</a>.</h4>
+          
+        <div class="page-image" style="--image-width: 35rem;">
+          <a href="https://platform.openai.com/tokenizer" target="_blank">
+            <img src="assets/img/Tokenisation.png">
+          </a>
+        </div>
+        
+        <h4>Therefore instead of seeing the array...</h4>
+
+        <h4><code>['T', 'o', ' ', 'b', 'e', ' ', 'o', 'r', ' ', 'n', 'o', 't', ' ', 't', 'o', ' ', 'b','e', ',']</code></h4>
+
+        <h4>...the model instead only has to process.</h4>
+
+        <h4><code>[1385, 413, 503, 625, 316, 413, 11]</code></h4>
+        
+        <h4>There is a trade-off between vocabulary size (larger when using sub-word tokenisation) and the number of tokens required to encode a given text (larger with character-level tokenisation) and a surprising amount of performance can be gained from a well-designed tokeniser.</h4>
+      </div>
     
     </section>
   </body>

@@ -32,6 +32,7 @@
         </div>
       </div>
     </nav>
+    
     <section id="UROP-project" class="project-page">
       <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/highlight.min.js"></script>
       <script>hljs.highlightAll();</script>
@@ -105,7 +106,6 @@
             <img src="assets/img/Prism-rule.png">
           </a>
         </div>
-        </div>
 
         <h3>3. Pyramid Rule</h3>
         <h4>In a pyramid element, the collapsed point on all four tri faces must be at the apex of the pyramid:</h4>
@@ -141,8 +141,9 @@
         <h3>Code</h3>
         <h4>The majority of the code can be found <a href="https://gitlab.nektar.info/nektar/nektar/-/merge_requests/1889/diffs#diff-content-cf6ada38734e0d483d10d558e11c45b454afef28" target="_blank" class="sneaky-link">here</a>. The main file that I worked on was <code>InputCGNS.cpp</code>, responsible for reading in the <code>.cgns</code> file and converting it to the NekMesh format, though plenty of modifications were required to surrounding files to support the features added.</h4>
 
+        <!-- This might be causing the scrolling issue...? -->
         <div class="code-box">
-          <pre><code id="nekmesh_terminal_command"></code></pre>
+          <pre><code id="nekmesh_terminal_command" class="language-python"></code></pre>
           <script>
             insertText('assets/code_snippets/nekmesh_terminal_command.txt', 'nekmesh_terminal_command');
           </script>
@@ -158,7 +159,6 @@
           <iframe class="iframepdf" style="border:none;" title="Thesis" src="assets/PDFs/InputCGNSPresentation.pdf">
           </iframe>
         </div>
-
       </div>
     </section>
   </body>

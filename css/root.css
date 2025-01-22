@@ -23,6 +23,7 @@ section {
 
 .project-page {
   width: 70%;
+  margin-bottom: 3rem;
 }
 
 h1, h2, h3, h4, h5, h6, li {
@@ -156,7 +157,8 @@ span.colors:hover {
 /* Code */
 .code-box {
   display: flex;
-  width: 40rem;
+  min-width: 40rem; /* Default width */
+  width: fit-content; /* Expands if content overflows */
   background-color: var(--codebox-colour);
   overflow: hidden;
   border-radius: 0.3rem;
