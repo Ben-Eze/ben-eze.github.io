@@ -1,0 +1,4 @@
+// The code is run with one command, located in the following directory:
+// ./nektar++/library/NekMesh/Module/InputModules
+
+./NekMesh /path/to/mesh.cgns /path/to/mesh.xml

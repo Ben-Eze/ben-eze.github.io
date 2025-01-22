@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&display=swap" rel="stylesheet">
+    <script src="javascript/utils/insert-text.js"></script>
   </head>
   
   <body>
@@ -32,24 +33,132 @@
       </div>
     </nav>
     <section id="UROP-project">
-      <div class="typewriter">
-        <div>
-          <h1>UROP</h1>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script>
 
-          <h3>High-Order Mesh Generation for Turbomachinery Simulations</h3>
-          <h4>As part of a 12-week research project with Imperial, I helped develop an interface between the commercial mesh generation software ANSA and the in-house high-order meshing tool NekMesh, part of the <a href="https://www.nektar.info/" target="_blank" class="sneaky-link">Nektar++</a> suite.</h4>
+      <div class="typewriter"><div>
+        <h1 style="--time: 0.26s; --steps:4">UROP</h1>
+      </div></div>
 
-          <div class="page-image">
-            <a href="https://www.nektar.info/" target="_blank">
-              <img src="https://www.nektar.info/wp-content/uploads/2017/04/elemental_front-e1500025272485.png">
-            </a>
-          </div>
+      <h2><i>High-Order Mesh Generation for Turbomachinery Simulations</i></h2>
 
-          <h4>The interface must be able to handle high-order (up to 4th) meshes. I had to develop an algorithm for handling 'troublesome' meshes, since the particular coordinate system used doesn't allow for certain configurations.</h4>
-
-          <h4>Once the code was written and tested, I wrote <a href="https://doc.nektar.info/developerguide/latest/developer-guidech17.html" target="_blank" class="sneaky-link">documentation</a>, and presented my results to end-users at <a href="https://www.rolls-royce.com/sustainability/engineering-and-innovation.aspx#/" target="_blank" class="sneaky-link">RollsRoyce</a> and developers at <a href="https://www.beta-cae.com/ansa.htm" target="_blank" class="sneaky-link">ANSA</a>, summarised in <a href="assets/PDFs/InputCGNSPresentation.pdf" target="_blank" class="sneaky-link">this</a> PowerPoint.</h4>
+      <div>
+        <div class="page-image">
+          <a href="https://www.nektar.info/" target="_blank">
+            <img src="https://www.nektar.info/wp-content/uploads/2017/04/elemental_front-e1500025272485.png">
+          </a>
         </div>
-      
+
+        <h3>Introduction</h3>
+        <h4>As part of a 12-week research project with Imperial in the Summer of 2024, I helped develop an interface between the commercial mesh generation software ANSA and the in-house high-order meshing tool NekMesh, part of the <a href="https://www.nektar.info/" target="_blank" class="sneaky-link">Nektar++</a> suite. In short, the tool had to convert <code>.cgns</code> files into the NekMesh file format. However, this was not a straight-forward process, due to the different conventions used by the two formats, namely in how they handle the higher order nodes, and it was found that simply 'translating' certain meshes between the two formats is impossible without first modifying them. This required careful investigation into the inner workings of the existing code, extending this functionality, and developing a novel algorithm, which I named 'Pyramid Shielding'.</h4>
+
+        <h4>Once the code was written and tested, I wrote <a href="https://doc.nektar.info/developerguide/latest/developer-guidech17.html" target="_blank" class="sneaky-link">documentation</a>, and presented my results to end-users at <a href="https://www.rolls-royce.com/sustainability/engineering-and-innovation.aspx#/" target="_blank" class="sneaky-link">RollsRoyce</a> and developers at <a href="https://www.beta-cae.com/ansa.htm" target="_blank" class="sneaky-link">ANSA</a>, summarised in the PowerPoint at the bottom of this page.</h4>
+
+        <h3>High-Order Meshes</h3>
+        <h4>Before any fancy turbomachinery CFD simulations can be run, one must create the mesh in which we will solve our equations. This is the process of discretising the continuous fluid domain into finite mesh elements/cells. The simplest way of doing this is to use rectangular (2D) or cuboid (3D) cells and assume that flow properties are constant within each cell - this is the method that I used in <a href="fluid-sim.html" class="sneaky-link">my own simulation</a>.</h4>
+
+        <!-- Diagram of simple 2D square mesh -->
+
+        <h4>Whilst this method benefits from its simplicity, it cannot handle boundaries that are not simply horizontal or vertical, and one must settle for pixelated shapes. The first extension is to use different shaped elements, such as triangles in 2D, and tetrahedrons, pyramids and pentahedrons in 3D. These each have their own benefits for filling different parts of the domain (eg. the bulk of the fluid vs boundaries) and we can now approximate the surface of solid boundaries much better.</h4>
+
+        <h4>However, we are still forced to approximate curved surfaces crudely, unless we set the resolution very high, which has knock-on effects on the convergence speed and stability when we eventually run our simulations. This is where non-linear meshes come in - elements can now have non-linear boundaries and use non-linear trial functions. More information is available in <a href="https://davidmoxey.uk/assets/talks/2016-11-dipart.pdf" class="sneaky-link" target="_blank">this presentation</a> by David Moxey, another project leader at Nektar++ or in <a href="https://www.researchgate.net/publication/51991890_SpectralHP_Element_Methods_for_Computational_Fluid_Dynamics" class="sneaky-link" target="_blank">this textbook</a> by Spencer Sherwin.</h4>
+
+        <div class="page-image" style="--image-width: 30rem;">
+          <a href="https://davidmoxey.uk/assets/talks/2016-11-dipart.pdf" target="_blank">
+            <img src="assets/img/DMoxey-HighOrderMesh.png">
+          </a>
+        </div>
+
+        <h3>Representing 3D Non-Linear Meshes in Code</h3>
+        <h4>The theory that was relevant to my project is how one represents these higher order meshes in code. Meshes have a hierarchical structure, in which they are formed of elements, which are formed of faces and edges in turn. </h4>
+
+        <div class="page-image" style="--image-width: 30rem;">
+          <a>
+            <img src="assets/img/Mesh-hierarchy.png">
+          </a>
+        </div>
+
+        <h4>Quad(rilateral) elements are simple to implement, but for Tri(angular) elements, there is a choice of coordinate systems. Either the 'natural coordinate' system is used, which is symmetric, but which requires three coordinates to specify a location, or the 'collapsed point' coodinate system, in which one of the points on a Quad is 'collapsed' into an adjacent one. NekMesh uses this and it only requires two coordinates, but is no longer symmetric. In code, this collapsed point is indicated by giving it the highest node id of the three vertices in the Tri.</h4>
+
+        <div class="page-image" style="--image-width: 50rem;">
+          <a href="https://leancrew.com/all-this/2022/12/triangles-and-area-coordinates/" target="_blank">
+            <img src="assets/img/Triangular-coodinate-systems.png">
+          </a>
+        </div>
+
+        <h4>Where it gets interesting is how one can combine these faces to form 3D elements. The NekMesh format requires element to adhere to three rules when forming and joining elements...</h4>
+
+        <h3>1. Tri-Interface Rule</h3>
+        <h4>This rule simply states that when Tri faces on two elements meet, the collapsed point must be the same for each tri:</h4>
+
+        <div class="page-image" style="--image-width: 35rem;">
+          <a href="https://doc.nektar.info/developerguide/latest/developer-guidese57.html#x83-28600017.2" target="_blank">
+            <img src="assets/img/Tri-interface-rule.png">
+          </a>
+        </div>
+
+        <h3>2. Prism Rule</h3>
+        <h4>For prism elements, the collapsed point on both the tri faces must correspond (ie. there must be an edge joining them). Combining this with rule 1., we see that in a prism line (line of prisms joined by their Tri faces), they all must be oriented in the same way:</h4>
+
+        <div class="page-image" style="--image-width: 30rem;">
+          <a href="https://doc.nektar.info/developerguide/latest/developer-guidese57.html#x83-28600017.2" target="_blank">
+            <img src="assets/img/Prism-rule.png">
+          </a>
+        </div>
+        </div>
+
+        <h3>3. Pyramid Rule</h3>
+        <h4>In a pyramid element, the collapsed point on all four tri faces must be at the apex of the pyramid:</h4>
+
+        <div class="page-image" style="--image-width: 35rem;">
+          <a href="https://doc.nektar.info/developerguide/latest/developer-guidese57.html#x83-28600017.2" target="_blank">
+            <img src="assets/img/Pyramid-rule.png">
+          </a>
+        </div>
+
+        <h4>When the three rules are combined, there are a few cases which are impossible to mesh. Though <i>some</i> of these are unlikely to be produced by a mesh generator such as ANSA, one of these 'tricky' cases just requires two pyramid elements, aligned as below.</h4>
+        
+        <div class="page-image" style="--image-width: 25rem;">
+          <a href="https://doc.nektar.info/developerguide/latest/developer-guidese57.html#x83-28600017.2" target="_blank">
+            <img src="assets/img/Impossible-Pyramid.png">
+          </a>
+        </div>
+
+        <h4>Additionally, in a sample mesh provided by RollsRoyce, there were many cases of this type spotted, proving difinitively that it would be an issue.
+        One solution is to turn off Pyra elements entirely, but they are useful for transitioning between Tet and Hex elements, since they are formed of both Tri and Quad faces. Therefore, a solution is needed.</h4>
+
+        <h3>Pyramid Shielding</h3>
+        <h4>This is the solution that I devised, and it is the simplest way round the problem. The idea is to split a problematic Pyra into a smaller one and four Tets. This 'shields' the apex of the Pyra, decoupling it from neigboouring elements:</h4>
+
+        <div class="page-image" style="--image-width: 35rem;">
+          <a href="https://doc.nektar.info/developerguide/latest/developer-guidese57.html#x83-28600017.2" target="_blank">
+            <img src="assets/img/Pyramid-shielding.png">
+          </a>
+        </div>
+
+        <h4>I was able to implement this in the file <code>InputCGNS.cpp</code>, however one would then want to refine this mesh around the modified area, since it can potentially create skewed elements, which cause problems with convergence when solving.</h4>
+
+        <h3>Code</h3>
+        <h4>The majority of the code can be found <a href="https://gitlab.nektar.info/nektar/nektar/-/merge_requests/1889/diffs#diff-content-cf6ada38734e0d483d10d558e11c45b454afef28" target="_blank" class="sneaky-link">here</a>. The main file that I worked on was <code>InputCGNS.cpp</code>, responsible for reading in the <code>.cgns</code> file and converting it to the NekMesh format, though plenty of modifications were required to surrounding files to support the features added.</h4>
+
+        <div class="code-box">
+          <pre><code id="nekmesh_terminal_command"></code></pre>
+          <script>
+            insertText('assets/code_snippets/nekmesh_terminal_command.txt', 'nekmesh_terminal_command');
+          </script>
+        </div>
+
+        <h4>Plenty of work went into ensuring that elements were all correctly aligned, even in cases where the mesh <i>can</i> be converted without modifications.</h4>
+        
+        <h3>Conclusion</h3>
+        <h4>Overall, this project was a great introduction to the world of meshing, something that I had not previously considered, and I am keen to apply some of these more advanced techniques to my own fluid simulator. Writing clear documentation was an important part of the project, and I would like to return to this to the project to extend and tidy it up. A large amount of my time was spent reverse-engineering the theory from the existing code - such is the nature of researching niche topics - but hopefully the next person to work on NekMesh can have an easier learning experience. </h4>
+
+        <h4>I am very grateful to my supervisors <a href="https://profiles.imperial.ac.uk/s.sherwin" class="sneaky-link" target="_blank">Spencer Sherwin</a> and <a href="https://profiles.imperial.ac.uk/j.peiro" class="sneaky-link" target="_blank">Joaquim Peiro</a> for their guidance, and to the developers at RollsRoyce and ANSA for their feedback, which helped me to refine the code. I look forward to continuing my studies in this area, and potentially returning to work on Nektar++.</h4>
+        <div class="iframewindow">
+          <iframe class="iframepdf" style="border:none;" title="Thesis" src="assets/PDFs/InputCGNSPresentation.pdf">
+          </iframe>
+        </div>
+
       </div>
     </section>
   </body>
