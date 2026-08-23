@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="css/root.css">
+    <link rel="stylesheet" href="css/nav.css">
+    {%- for href in extraCss %}
+    <link rel="stylesheet" href="css/{{ href }}">
+    {%- endfor %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&display=swap" rel="stylesheet">
+    {%- if useHighlightJs %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/vs2015.min.css">
+    {%- endif %}
+    {%- if useInsertText %}
+    <script src="javascript/utils/insert-text.js"></script>
+    {%- endif %}
+    {%- if useOnnxRuntime %}
+    <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@latest/dist/ort.min.js"></script>
+    {%- endif %}
+  </head>
+
+  <body>
+    <nav>
+      <div class="nav-links">
+        <div class="left-nav">
+          <a class="nav-active-button" href="{{ '#home' if home else 'index.html' }}">
+            Ben <strong>Eze</strong>
+          </a>
+          <a class="nav-inactive-button" href="{{ '#projects' if home else 'index.html#projects' }}">
+            Projects
+          </a>
+          <a class="nav-inactive-button" href="publications.html">
+            Publications
+          </a>
+        </div>
+        <div class="right-nav">
+          <a class="nav-active-button" href="{{ '#contact' if home else 'index.html#contact' }}">
+            Contact
+          </a>
+          <a class="nav-inactive-button" href="assets/PDFs/CV.pdf" target="_blank">
+            CV
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    {{ content | safe }}
+  </body>
+</html>

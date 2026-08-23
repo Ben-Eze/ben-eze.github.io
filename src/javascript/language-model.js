@@ -1,8 +1,6 @@
 import Model from "./Model.js";
 
-const model = await Model.load(
-    './assets/models/gpt_model.onnx', 
-    '.shakespeare_tokenizer.json');
+const model = await Model.load('./assets/models/gpt_model.onnx');
 
 export default async function* nextChunk(originalContext, contextSize = 8) {
     var chunk = "";

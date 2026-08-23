@@ -1,0 +1,25 @@
+---
+layout: base.njk
+---
+<section id="{{ sectionId }}" class="project-page">
+{%- if useTextCompletion %}
+  <script type="module" src="javascript/text-completion.js"></script>
+{%- endif %}
+{%- if useHighlightJs %}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+{%- endif %}
+{%- if useMathJax %}
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+{%- endif %}
+
+  <div class="typewriter"><div>
+    {%- if time %}
+    <h1 style="--time: {{ time }}; --steps:{{ title | length }}">{{ title }}</h1>
+    {%- else %}
+    <h1>{{ title }}</h1>
+    {%- endif %}
+  </div></div>
+
+  {{ content | safe }}
+</section>

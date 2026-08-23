@@ -1,0 +1,20 @@
+---
+layout: project.njk
+title: Publications
+sectionId: publications
+permalink: publications.html
+time: 0.26s
+extraCss: [page.css, projects.css]
+---
+{% from "project-card.njk" import projectCard %}
+<h4>Placeholder text introducing the publications section.</h4>
+
+{% call projectCard("masters-thesis.html") %}
+<h3><a href="masters-thesis.html" class="sneaky-link">Master's Thesis</a></h3>
+<h4>Placeholder description of the Master's Thesis.</h4>
+{% endcall %}
+
+{% call projectCard("lamp-paper.html") %}
+<h3><a href="lamp-paper.html" class="sneaky-link">LAMP Paper</a></h3>
+<h4>Placeholder description of the LAMP paper.</h4>
+{% endcall %}

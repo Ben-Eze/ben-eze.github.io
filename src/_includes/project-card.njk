@@ -1,0 +1,14 @@
+{% macro projectCard(href, img="", imgClass="") %}
+<div class="project-card">
+  {%- if img %}
+  <div{% if imgClass %} class="{{ imgClass }}"{% endif %}>
+    <a href="{{ href }}">
+      <img src="{{ img }}">
+    </a>
+  </div>
+  {%- endif %}
+  <div class="project-card-txt-div">
+    {{ caller() }}
+  </div>
+</div>
+{% endmacro %}
