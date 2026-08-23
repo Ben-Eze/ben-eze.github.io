@@ -25,7 +25,7 @@ export default class Model {
 
     async forward(context) {
         const encodedContext = this.tokeniser.encode(
-            context.slice(-self.N_context)
+            context.slice(-this.N_context)
         );
         console.log('Encoded context:', encodedContext);
 

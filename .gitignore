@@ -1,3 +1,5 @@
 .vscode
 archive
 misc
+node_modules
+_site
