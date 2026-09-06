@@ -19,5 +19,85 @@
 }
 
 .page-image img {
-    width: 100%;         
+    width: 100%;
+}
+
+/* Interactive fluid simulation */
+.sim-window {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    background-color: var(--codebox-colour);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.35);
+}
+
+.sim-window__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.6rem 1rem;
+    background-color: var(--tertiary-colour);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.sim-window__title {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-colour2);
+}
+
+.sim-window__button {
+    flex-shrink: 0;
+    padding: 0;
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--accent-colour);
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.sim-window__button:hover {
+    opacity: 0.75;
+    text-decoration: underline;
+}
+
+.sim-window__canvas-wrap {
+    position: relative;
+    /* Must match the grid in fluid-sim.js (192 x 96), otherwise Display
+       letterboxes the fluid and leaves bars down the sides */
+    aspect-ratio: 2 / 1;
+}
+
+.sim-window__canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    cursor: crosshair;
+    touch-action: none; /* let a drag stir the fluid rather than scroll */
+}
+
+.sim-window__hint {
+    position: absolute;
+    left: 50%;
+    bottom: 1rem;
+    transform: translateX(-50%);
+    padding: 0.4rem 0.9rem;
+    font-size: 0.8rem;
+    color: var(--text-colour2);
+    background-color: rgba(0, 0, 15, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 2rem;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+
+.sim-window__hint.is-hidden {
+    opacity: 0;
 }
