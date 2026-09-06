@@ -22,6 +22,27 @@
   align-content: center;
 }
 
+/* Anchors the badge to the image rather than the whole card */
+.project-card-img-wrap {
+  position: relative;
+}
+
+.project-card-badge {
+  position: absolute;
+  /* The tilt swings the tail up and to the right by width * sin(30deg), so
+     the anchor sits low enough for it to clear the top edge */
+  top: 3rem;
+  left: 0.4rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #ff4d4d;
+  transform: rotate(-30deg);
+  transform-origin: left center;
+  pointer-events: none; /* so it doesn't swallow clicks on the image link */
+}
+
 .project-card img {
   height: 18rem;
   object-fit: contain;

@@ -125,6 +125,7 @@ span.colors:hover {
   --text-colour2: #a8a8a8;
   --text-colour3: #919191;
   --IMPERIAL-blue: #0000cd;
+  --nav-link-gap: 3rem;
 }
 
 .sneaky-link {

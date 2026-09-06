@@ -1,10 +1,13 @@
-{% macro projectCard(href, img="", imgClass="") %}
+{% macro projectCard(href, img="", imgClass="", badge="") %}
 <div class="project-card">
   {%- if img %}
-  <div{% if imgClass %} class="{{ imgClass }}"{% endif %}>
+  <div class="project-card-img-wrap{% if imgClass %} {{ imgClass }}{% endif %}">
     <a href="{{ href }}">
       <img src="{{ img }}">
     </a>
+    {%- if badge %}
+    <span class="project-card-badge">{{ badge }}</span>
+    {%- endif %}
   </div>
   {%- endif %}
   <div class="project-card-txt-div">
