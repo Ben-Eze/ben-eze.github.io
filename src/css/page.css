@@ -22,6 +22,171 @@
     width: 100%;
 }
 
+/* Flow reconstruction demo */
+.flow-demo {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background-color: var(--codebox-colour);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 0.5rem;
+}
+
+.flow-demo__controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 2rem;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.flow-control {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.flow-control__label {
+    font-size: 0.8rem;
+    color: var(--text-colour3);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.flow-control__value {
+    font-size: 0.85rem;
+    color: var(--text-colour2);
+    min-width: 5rem;
+}
+
+.flow-toggle {
+    display: flex;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 0.3rem;
+    overflow: hidden;
+}
+
+.flow-toggle__button {
+    padding: 0.3rem 0.7rem;
+    font-family: inherit;
+    font-size: 0.85rem;
+    color: var(--text-colour2);
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.flow-toggle__button:hover {
+    color: var(--text-colour);
+    background-color: rgba(255, 255, 255, 0.06);
+}
+
+.flow-toggle__button.is-active {
+    color: var(--background-colour);
+    background-color: var(--accent-colour);
+}
+
+.flow-play {
+    flex-shrink: 0;
+    width: 1.8rem;
+    height: 1.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    line-height: 1;
+    color: var(--text-colour2);
+    background-color: var(--tertiary-colour);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.flow-play:hover {
+    color: var(--text-colour);
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.flow-play.is-active {
+    color: var(--background-colour);
+    background-color: var(--accent-colour);
+    border-color: var(--accent-colour);
+}
+
+.flow-select,
+.flow-range {
+    font-family: inherit;
+    font-size: 0.85rem;
+    color: var(--text-colour);
+    background-color: var(--tertiary-colour);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 0.3rem;
+    padding: 0.25rem 0.4rem;
+}
+
+.flow-range {
+    padding: 0;
+    accent-color: var(--accent-colour);
+}
+
+.flow-demo__panels {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    gap: 1rem;
+}
+
+.flow-panel {
+    margin: 0;
+}
+
+.flow-panel__title {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-colour);
+    margin-bottom: 0.4rem;
+}
+
+.flow-panel__hint {
+    font-weight: 400;
+    color: var(--accent-colour);
+}
+
+.flow-panel__canvas {
+    display: block;
+    width: 100%;
+    aspect-ratio: 2 / 1; /* the field is 192 x 96 */
+    border-radius: 0.3rem;
+    background-color: var(--tertiary-colour);
+    /* Keep the 24px patches legible rather than blurring their edges */
+    image-rendering: pixelated;
+}
+
+.flow-panel--input .flow-panel__canvas {
+    cursor: pointer;
+    touch-action: none; /* a drag should paint patches, not scroll */
+    outline: 1px solid var(--accent-colour);
+}
+
+.flow-panel__note {
+    margin-top: 0.4rem;
+    font-size: 0.75rem;
+    color: var(--text-colour3);
+}
+
+.flow-demo__status {
+    margin-top: 1rem;
+    font-size: 0.85rem;
+    color: var(--text-colour2);
+    min-height: 1.2rem;
+}
+
+.flow-demo__error {
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    color: #ff4d4d;
+}
+
 /* Interactive fluid simulation */
 .sim-window {
     margin-top: 1.5rem;

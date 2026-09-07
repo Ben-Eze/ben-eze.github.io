@@ -16,6 +16,9 @@
     {%- if useInsertText %}
     <script src="javascript/utils/insert-text.js"></script>
     {%- endif %}
+    {%- if usePortalLink %}
+    <script src="javascript/utils/portal-link.js" defer></script>
+    {%- endif %}
     {%- if useOnnxRuntime %}
     <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@latest/dist/ort.min.js"></script>
     {%- endif %}
@@ -43,6 +46,7 @@
               Projects
             </a>
             <div class="nav-dropdown-menu">
+              <a href="flow-reconstruction.html">Flow reconstruction</a>
               <a href="fluid-sim.html">Real-time fluid sim</a>
               <a href="tiny-shakespeare.html">Language model</a>
               <a href="digit-recognition.html">Digit classification</a>

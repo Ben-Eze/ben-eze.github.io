@@ -4,21 +4,21 @@ title: Home
 home: true
 permalink: index.html
 extraCss: [index.css, projects.css, contact.css]
+usePortalLink: true
 ---
 {% from "project-card.njk" import projectCard %}
 <section id="home">
   <div class="home-page">
-    <div class="intro-loop">
-      <div class="title-pic">
-        <div class="title-container">
-          <h1>Website down for maintenance</h1>
-        </div>
-        </div>
-      </div>
+    <div class="home-intro">
+      <h2>Welcome to my page</h2>
+      <h4>Take a look at some of the projects and research I have been working on - there are plenty of interactive demos to have a go at.</h4>
     </div>
-    <video preload="" autoplay="" loop="" muted="" class="loop">
-      <source src="/assets/vid/fluid.MOV" type="video/mp4">
-    </video>
+
+    <a href="fluid-sim.html" class="portal-link">
+      <video preload="" autoplay="" loop="" muted="" playsinline class="loop">
+        <source src="/assets/vid/fluid.MOV" type="video/mp4">
+      </video>
+    </a>
   </div>
 </section>
 
@@ -28,7 +28,7 @@ extraCss: [index.css, projects.css, contact.css]
       Research
     </h2>
 
-    <h4>Placeholder text introducing the research section.</h4>
+    <!-- <h4>Read here about my previous research projects.</h4> -->
 
     {% call projectCard("masters-thesis.html") %}
     <h3><a href="masters-thesis.html" class="sneaky-link">Master's Thesis: Vision Transformer Masked Autoencoders for Flow Reconstruction</a></h3>
@@ -53,7 +53,14 @@ extraCss: [index.css, projects.css, contact.css]
       Projects
     </h2>
 
-    <h4>Here are some of the projects I've worked on (more to be added soon). Click on the images to find out more!</h4>
+    <!-- <h4>Here are some of the projects I've worked on (more to be added soon). Click on the images to find out more!</h4> -->
+
+    {% call projectCard("flow-reconstruction.html", "assets/img/flow-reconstruction-icon.png", "", "interactive") %}
+    <h3><a href="flow-reconstruction.html" class="sneaky-link">Flow Reconstruction</a></h3>
+    <h4>Mask out patches of a cylinder wake and watch the Vision Transformer from my <a href="masters-thesis.html" class="sneaky-link">Master's thesis</a> reconstruct the whole velocity field from whatever is left - running live in your browser.</h4>
+
+    <h4><i>Choose between the single-snapshot ViT and the temporal t-ViT, which sees the same patches across five snapshots and attends over them causally.</i></h4>
+    {% endcall %}
 
     {% call projectCard("fluid-sim.html", "assets/img/fluid-sim-frame.png", "project-card-img-div", "interactive") %}
     <h3><a href="fluid-sim.html" class="sneaky-link">Real-time 2D Fluid Simulation</a></h3>
