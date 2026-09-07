@@ -5,15 +5,40 @@ sectionId: masters-thesis
 permalink: masters-thesis.html
 time: 0.26s
 extraCss: [page.css]
+usePortalLink: true
 ---
-<h2><i>Placeholder subtitle</i></h2>
+<h2>Vision Transformer Masked Autoencoders for Restricted-Domain Flow Reconstruction</h2>
 
 <div>
-  <h3>Placeholder</h3>
-  <h4>Placeholder text.</h4>
+  <h3>About</h3>
+  <h4>Read here about my Master's Thesis, supervised by Andrea N&oacute;voa and Luca Magri, and which won the Project Merit Prize (Computational) within the department awarded for the computational project of the highest merit (with a grade of 95%). The poster was then presented a few months later at Imperial's <a href="https://www.imperial.ac.uk/events/211287/aeronautics-research-showcase-2026" class="sneaky-link" target="_blank">Aeronautics Research Showcase 2026</a>.</h4>
 
-  <div class="iframewindow">
-    <iframe class="iframepdf" style="border:none;" title="Master's Thesis" src="assets/PDFs/FYP.pdf">
-    </iframe>
+  <h3>Abstract</h3>
+  <h4>Vision Transformers have demonstrated outstanding performance for image generation, yet their adoption within fluid dynamics remains limited. The Latent Attention on Masked Patches (LAMP) model is thus introduced as an interpretable single-layer Vision Transformer, modified for training with regression. LAMP operates by patching the masked input snapshot and projecting it into a latent space through Proper Orthogonal Decomposition, where it can efficiently make predictions, before projecting back into the physical domain. Both the Vision Transformer Masked Autoencoders (ViT-MAE) and LAMP architectures are investigated and compared for masked flow reconstruction - the process of recovering the full flow state from partial measurements - on three 2D unsteady wakes: the laminar wake past a bluff body, the chaotic wake past two cylinders and the turbulent wake behind a porous flat plate. On the laminar wake, LAMP is able to reconstruct and filter the flow-field from 90%-masked and noisy input across signal-tonoise ratios from 10 to 30 dB. The learned attention maps serve as an interpretable multi-fidelity guide for optimal sensor-placement. LAMP's limitations on the chaotic two-cylinder wake motivate the need for the ViT-MAE, which is able to reconstruct with a mean-squared-error of 0.058, almost an order of magnitude lower than LAMP. Operating on patches results in visible artefacts, however the addition of a U-Net block is shown to remove these. The most notable flaw with the current approach is that it generates intermittent but significant loss spikes arising from the ill-posed nature of the inverse problem, and introducing temporal history is proposed as a remedy. On the turbulent wake, data augmentation is shown to be essential, enabling reconstruction beyond just the mean flow, despite a limited dataset size.
+</h4>
+
+  <div class="pdf-embed">
+    <div class="pdf-embed__bar">
+      <span class="pdf-embed__title">Master's Thesis</span>
+      <a class="pdf-embed__open" href="assets/PDFs/FYP.pdf" target="_blank" rel="noopener">Open in new tab &#8599;</a>
+    </div>
+    <iframe class="pdf-embed__frame" title="Master's Thesis" src="assets/PDFs/FYP.pdf#toolbar=0&navpanes=0"></iframe>
+  </div>
+
+  <div class="pdf-embed pdf-embed--full-page">
+    <div class="pdf-embed__bar">
+      <span class="pdf-embed__title">Research Showcase Poster</span>
+      <a class="pdf-embed__open" href="assets/PDFs/ResearchShowcasePoster.pdf" target="_blank" rel="noopener">Open in new tab &#8599;</a>
+    </div>
+    <iframe class="pdf-embed__frame" title="Research Showcase Poster" src="assets/PDFs/ResearchShowcasePoster.pdf#toolbar=0&navpanes=0"></iframe>
+  </div>
+
+  <h3>Try it yourself</h3>
+  <h4>Both models from this thesis run live in the browser - mask out patches of the wake and watch the reconstruction respond. Click below to have a go.</h4>
+
+  <div class="page-image">
+    <a href="flow-reconstruction.html" class="portal-link">
+      <img src="assets/img/Flow-reconstruction-interactive.png">
+    </a>
   </div>
 </div>

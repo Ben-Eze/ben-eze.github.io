@@ -1,6 +1,13 @@
 .home-page {
-  
-  min-height: 100vh
+  /* Sized by its content: a min-height here left a gap below the video */
+}
+
+.home-intro {
+  padding-bottom: 1.5rem;
+}
+
+.home-intro h4 {
+  max-width: 45rem;
 }
 
 .intro-loop {

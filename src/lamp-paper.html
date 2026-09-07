@@ -1,14 +1,25 @@
 ---
 layout: project.njk
-title: LAMP Paper
+title: Publication
 sectionId: lamp-paper
 permalink: lamp-paper.html
 time: 0.26s
 extraCss: [page.css]
 ---
-<h2><i>Placeholder subtitle</i></h2>
+<h2>Latent Attention on Masked Patches for Flow Reconstruction</h2>
 
 <div>
   <h3>Placeholder</h3>
-  <h4>Placeholder text.</h4>
+  <h4>Submitted during my final year, this is my first paper and was accepted to the <i>peer-reviewed</i> ICCS (International Conference on Computational Science) conference in 2026, and subsequently published in Springer LNCS Series. Read it on <a href="https://arxiv.org/abs/2603.02028" class="sneaky-link" target="_blank">arXiv</a> or via <a href="https://link.springer.com/chapter/10.1007/978-3-032-29915-4_15" class="sneaky-link" target="_blank">Springer</a>.</h4>
+
+  <h3>Abstract</h3>
+  <h4>Vision transformers have shown outstanding performance in image generation, yet their adoption in fluid dynamics remains limited. We introduce <i>Latent Attention on Masked Patches</i> (LAMP) model, an interpretable regression-based modified vision transformer designed for masked flow reconstruction. LAMP follows a three-fold strategy: (i) partition of each flow snapshot into patches, (ii) patch-wise dimensionality reduction via proper orthogonal decomposition, and (iii) reconstruction of the full field from a masked input using a single-layer transformer trained via closed-form linear regression. We test the method on two canonical 2D unsteady wakes: a laminar wake past a bluff body, and a chaotic wake past two cylinders. On the laminar case, LAMP accurately reconstructs the full flow field from a 90%-masked and noisy input, across signal-to-noise ratios between 10 and 30 dB. Further, the learned attention matrix yields interpretable multi-fidelity optimal sensor-placement maps. LAMP's performance on the chaotic wake is limited, but outperforms other regression methods such as gappy POD. The modularity of the framework, however, naturally accommodates nonlinear compression and deep attention blocks, thereby providing an efficient baseline for nonlinear, high-dimensional masked flow reconstruction.</h4>
+
+  <div class="pdf-embed">
+    <div class="pdf-embed__bar">
+      <span class="pdf-embed__title">LAMP Paper</span>
+      <a class="pdf-embed__open" href="assets/PDFs/LAMP.pdf" target="_blank" rel="noopener">Open in new tab &#8599;</a>
+    </div>
+    <iframe class="pdf-embed__frame" title="LAMP Paper" src="assets/PDFs/LAMP.pdf#toolbar=0&navpanes=0"></iframe>
+  </div>
 </div>

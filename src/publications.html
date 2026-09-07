@@ -1,20 +1,25 @@
 ---
 layout: project.njk
-title: Publications
-sectionId: publications
-permalink: publications.html
+title: Research
+sectionId: research
+permalink: research.html
 time: 0.26s
 extraCss: [page.css, projects.css]
 ---
 {% from "project-card.njk" import projectCard %}
-<h4>Placeholder text introducing the publications section.</h4>
+<h4>Placeholder text introducing the research section.</h4>
 
 {% call projectCard("masters-thesis.html") %}
-<h3><a href="masters-thesis.html" class="sneaky-link">Master's Thesis</a></h3>
-<h4>Placeholder description of the Master's Thesis.</h4>
+<h3><a href="masters-thesis.html" class="sneaky-link">Master's Thesis: Vision Transformer Masked Autoencoders for Flow Reconstruction</a></h3>
+<h4>Award-winning Master's thesis and poster</h4>
 {% endcall %}
 
-{% call projectCard("lamp-paper.html") %}
-<h3><a href="lamp-paper.html" class="sneaky-link">LAMP Paper</a></h3>
-<h4>Placeholder description of the LAMP paper.</h4>
+{% call projectCard("lamp-paper.html", "assets/img/LAMP_Springer.png") %}
+<h3><a href="lamp-paper.html" class="sneaky-link">Publication: Latent Atention on Masked Patches (LAMP) for Flow Reconstruction</a></h3>
+<h4>Precursor to the implementing full Vision Transformers, this paper presents a novel approach to masked flow reconstruction. The paper was accepted for the <a href="https://www.iccs-meeting.org/iccs2026/" class="sneaky-link" target="_blank">ICCS 2026 Conference</a> and for publication in <a href="https://link.springer.com/chapter/10.1007/978-3-032-29915-4_15" class="sneaky-link" target="_blank">Springer LNCS</a>.</h4>
+{% endcall %}
+
+{% call projectCard("UROP.html", "assets/img/UROP-icon.png") %}
+<h3><a href="UROP.html" class="sneaky-link">Summer Research Project: High-Order Mesh Generation for Turbomachinery Simulations</a></h3>
+<h4>UROP at Imperial working on NekMesh, part of the <a href="https://www.nektar.info/" class="sneaky-link" target="_blank">Nektar++</a> suite, including <a href="https://gitlab.nektar.info/nektar/nektar/-/merge_requests/1889" target="_blank" class="sneaky-link">code</a>, a <a href="assets/PDFs/InputCGNSPresentation.pdf" target="_blank" class="sneaky-link">presentation</a> given to engineers at RollsRoyce and ANSA, and <a href="https://doc.nektar.info/developerguide/latest/developer-guidech17.html" target="_blank" class="sneaky-link">documentation</a>.</h4>
 {% endcall %}

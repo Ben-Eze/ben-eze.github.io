@@ -1,0 +1,87 @@
+---
+layout: project.njk
+title: Flow Reconstruction
+sectionId: flow-reconstruction
+permalink: flow-reconstruction.html
+time: 0.5s
+extraCss: [page.css]
+useOnnxRuntime: true
+useMathJax: true
+---
+<h2><i>Reconstructing a flow field from a handful of patches</i></h2>
+
+<div>
+  <h4>This is the <a href="masters-thesis.html" class="sneaky-link">Vision Transformer Masked Autoencoder</a> from my Master's thesis, running live in the browser. The model sees only the patches you leave unmasked and reconstructs the entire velocity field from them - click or drag on the middle panel to choose what it gets to see.</h4>
+
+  <div class="flow-demo" id="flow-demo">
+    <div class="flow-demo__controls">
+      <div class="flow-control">
+        <span class="flow-control__label">Model</span>
+        <div class="flow-toggle">
+          <button type="button" class="flow-toggle__button is-active" data-model="vit">ViT</button>
+          <button type="button" class="flow-toggle__button" data-model="tvit">t-ViT</button>
+        </div>
+      </div>
+
+      <div class="flow-control">
+        <span class="flow-control__label">Unmasked</span>
+        <div class="flow-toggle">
+          <button type="button" class="flow-toggle__button" data-mask="default">25%</button>
+          <button type="button" class="flow-toggle__button" data-mask="all">All</button>
+          <button type="button" class="flow-toggle__button" data-mask="none">None</button>
+        </div>
+        <span class="flow-control__value" id="flow-count">&ndash;</span>
+      </div>
+
+      <div class="flow-control">
+        <span class="flow-control__label">Field</span>
+        <select id="flow-field" class="flow-select">
+          <option value="vorticity" selected>Vorticity</option>
+          <option value="u">u</option>
+          <option value="v">v</option>
+        </select>
+      </div>
+
+      <div class="flow-control">
+        <span class="flow-control__label">Snapshot</span>
+        <button type="button" class="flow-play" id="flow-play" aria-label="Play">&#9654;</button>
+        <input type="range" id="flow-frame" class="flow-range" min="0" max="0" value="0" step="1">
+        <span class="flow-control__value" id="flow-frame-label">&ndash;</span>
+      </div>
+    </div>
+
+    <div class="flow-demo__panels">
+      <figure class="flow-panel">
+        <figcaption class="flow-panel__title">Target</figcaption>
+        <canvas class="flow-panel__canvas" id="flow-target" width="192" height="96"></canvas>
+        <p class="flow-panel__note">The ground truth the model never sees</p>
+      </figure>
+
+      <figure class="flow-panel flow-panel--input">
+        <figcaption class="flow-panel__title">Input <span class="flow-panel__hint">- click or drag to unmask</span></figcaption>
+        <canvas class="flow-panel__canvas" id="flow-input" width="192" height="96"></canvas>
+        <p class="flow-panel__note">Only the unmasked patches reach the encoder</p>
+      </figure>
+
+      <figure class="flow-panel">
+        <figcaption class="flow-panel__title">Output</figcaption>
+        <canvas class="flow-panel__canvas" id="flow-output" width="192" height="96"></canvas>
+        <p class="flow-panel__note">Predicted where masked, input where not</p>
+      </figure>
+    </div>
+
+    <p class="flow-demo__status" id="flow-status"></p>
+    <p class="flow-demo__error" id="flow-error" hidden></p>
+  </div>
+  <script src="javascript/flow-reconstruction.js"></script>
+
+  <h3>What the model is doing</h3>
+  <h4>The snapshot is a <span class="latex">\( 96 \times 192 \)</span> field of velocity components <span class="latex">\( (u, v) \)</span> from the wake behind two cylinders, cut into a <span class="latex">\( 4 \times 8 \)</span> grid of <span class="latex">\( 24 \times 24 \)</span> patches. Only the unmasked patches are embedded and passed through the encoder - the masked positions are not fed in at all, which is what makes the encoder cheap regardless of how much you hide. Before decoding, the encoded tokens are scattered back to their positions and every masked slot is filled with a single learned mask token, so the decoder reconstructs all 32 patches from a mixture of real evidence and learned prior. The output panel pastes the patches the model was given back over its own version of them, so everything you see there that is not simply the input is a prediction.</h4>
+
+  <h4>With the default 25% pattern the model is working from two columns of patches, and it still recovers the vortex street downstream of them - the wake is highly structured, and the attention maps learn where that structure comes from. Mask everything and the output collapses towards the mean flow, which is the honest answer when there is no evidence to condition on.</h4>
+
+  <h3>ViT vs t-ViT</h3>
+  <h4>The <b>ViT</b> sees a single snapshot. The <b>t-ViT</b> instead sees the same patches across five snapshots spaced ten steps apart, ending at the one shown, and attends over them block-causally - each timestep can attend to itself and to earlier ones, but not to the future. It reconstructs every step in that window; the panel shows the last. The extra temporal context is what lets it disambiguate flow states that look identical in a single frame but are moving differently, which was the remedy proposed in the thesis for the intermittent loss spikes the single-frame model suffers from.</h4>
+
+  <h4>Both models run entirely in your browser via <a href="https://onnxruntime.ai/docs/tutorials/web/" class="sneaky-link" target="_blank">ONNX Runtime Web</a> - nothing is sent to a server. They are quantised to int8 to keep the download reasonable, so the reconstruction is very slightly noisier than the full-precision model reported in the thesis.</h4>
+</div>

@@ -16,6 +16,9 @@
     {%- if useInsertText %}
     <script src="javascript/utils/insert-text.js"></script>
     {%- endif %}
+    {%- if usePortalLink %}
+    <script src="javascript/utils/portal-link.js" defer></script>
+    {%- endif %}
     {%- if useOnnxRuntime %}
     <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@latest/dist/ort.min.js"></script>
     {%- endif %}
@@ -28,17 +31,39 @@
           <a class="nav-active-button" href="{{ '#home' if home else 'index.html' }}">
             Ben <strong>Eze</strong>
           </a>
-          <a class="nav-inactive-button" href="{{ '#projects' if home else 'index.html#projects' }}">
-            Projects
-          </a>
-          <a class="nav-inactive-button" href="publications.html">
-            Publications
-          </a>
+          <div class="nav-dropdown">
+            <a class="nav-inactive-button" href="{{ '#research' if home else 'index.html#research' }}">
+              Research
+            </a>
+            <div class="nav-dropdown-menu">
+              <a href="masters-thesis.html">Master's thesis</a>
+              <a href="lamp-paper.html">LAMP paper</a>
+              <a href="UROP.html">Summer research project</a>
+            </div>
+          </div>
+          <div class="nav-dropdown">
+            <a class="nav-inactive-button" href="{{ '#projects' if home else 'index.html#projects' }}">
+              Projects
+            </a>
+            <div class="nav-dropdown-menu">
+              <a href="flow-reconstruction.html">Flow reconstruction</a>
+              <a href="fluid-sim.html">Real-time fluid sim</a>
+              <a href="tiny-shakespeare.html">Language model</a>
+              <a href="digit-recognition.html">Digit classification</a>
+            </div>
+          </div>
         </div>
         <div class="right-nav">
-          <a class="nav-active-button" href="{{ '#contact' if home else 'index.html#contact' }}">
-            Contact
-          </a>
+          <div class="nav-dropdown">
+            <a class="nav-active-button" href="{{ '#contact' if home else 'index.html#contact' }}">
+              Contact
+            </a>
+            <div class="nav-dropdown-menu nav-dropdown-menu-right">
+              <a href="https://www.linkedin.com/in/ben-eze-5a41661ba/" target="_blank">LinkedIn</a>
+              <a href="mailto:be121@ic.ac.uk">Email</a>
+              <a href="https://github.com/Ben-Eze/" target="_blank">GitHub</a>
+            </div>
+          </div>
           <a class="nav-inactive-button" href="assets/PDFs/CV.pdf" target="_blank">
             CV
           </a>

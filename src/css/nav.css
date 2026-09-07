@@ -25,7 +25,7 @@ nav {
 .nav-links a {
   text-decoration: none;
   font-size: 1.25rem;
-  margin: 0.3rem 3rem;
+  margin: 0.3rem var(--nav-link-gap);
   color: var(--text-colour);
   transition: color 0.2s;
   font-weight: 300;
@@ -33,4 +33,46 @@ nav {
 
 .nav-links a:hover {
   color: var(--accent-colour)
+}
+
+.nav-dropdown {
+  position: relative;
+}
+
+.nav-dropdown-menu {
+  position: absolute;
+  top: 100%; /* flush with the bar, so the hover doesn't break on the way down */
+  left: var(--nav-link-gap); /* line up with the link, past its margin */
+  display: flex;
+  flex-direction: column;
+  padding: 0.4rem 0;
+  background-color: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0.3rem;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-0.3rem);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+}
+
+/* For links in the right-hand nav, so the menu can't run off the edge */
+.nav-dropdown-menu-right {
+  left: auto;
+  right: var(--nav-link-gap);
+}
+
+.nav-dropdown:hover .nav-dropdown-menu,
+.nav-dropdown:focus-within .nav-dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.nav-dropdown-menu a {
+  font-size: 1rem;
+  margin: 0;
+  padding: 0.35rem 1rem;
+  white-space: nowrap;
+  color: var(--text-colour2);
 }

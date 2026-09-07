@@ -4,21 +4,46 @@ title: Home
 home: true
 permalink: index.html
 extraCss: [index.css, projects.css, contact.css]
+usePortalLink: true
 ---
 {% from "project-card.njk" import projectCard %}
 <section id="home">
   <div class="home-page">
-    <div class="intro-loop">
-      <div class="title-pic">
-        <div class="title-container">
-          <h1>Website down for maintenance</h1>
-        </div>
-        </div>
-      </div>
+    <div class="home-intro">
+      <h2>Welcome to my page</h2>
+      <h4>Take a look at some of the projects and research I have been working on - there are plenty of interactive demos to have a go at.</h4>
     </div>
-    <video preload="" autoplay="" loop="" muted="" class="loop">
-      <source src="/assets/vid/fluid.MOV" type="video/mp4">
-    </video>
+
+    <a href="fluid-sim.html" class="portal-link">
+      <video preload="" autoplay="" loop="" muted="" playsinline class="loop">
+        <source src="/assets/vid/fluid.MOV" type="video/mp4">
+      </video>
+    </a>
+  </div>
+</section>
+
+<section id="research">
+  <div class="projects-page">
+    <h2>
+      Research
+    </h2>
+
+    <!-- <h4>Read here about my previous research projects.</h4> -->
+
+    {% call projectCard("masters-thesis.html") %}
+    <h3><a href="masters-thesis.html" class="sneaky-link">Master's Thesis: Vision Transformer Masked Autoencoders for Flow Reconstruction</a></h3>
+    <h4>Award-winning Master's thesis and poster</h4>
+    {% endcall %}
+
+    {% call projectCard("lamp-paper.html", "assets/img/LAMP_Springer.png") %}
+    <h3><a href="lamp-paper.html" class="sneaky-link">Publication: Latent Atention on Masked Patches (LAMP) for Flow Reconstruction</a></h3>
+    <h4>Precursor to the implementing full Vision Transformers, this paper presents a novel approach to masked flow reconstruction. The paper was accepted for the <a href="https://www.iccs-meeting.org/iccs2026/" class="sneaky-link" target="_blank">ICCS 2026 Conference</a> and for publication in <a href="https://link.springer.com/chapter/10.1007/978-3-032-29915-4_15" class="sneaky-link" target="_blank">Springer LNCS</a>.</h4>
+    {% endcall %}
+
+    {% call projectCard("UROP.html", "assets/img/UROP-icon.png") %}
+    <h3><a href="UROP.html" class="sneaky-link">Summer Research Project: High-Order Mesh Generation for Turbomachinery Simulations</a></h3>
+    <h4>UROP at Imperial working on NekMesh, part of the <a href="https://www.nektar.info/" class="sneaky-link" target="_blank">Nektar++</a> suite, including <a href="https://gitlab.nektar.info/nektar/nektar/-/merge_requests/1889" target="_blank" class="sneaky-link">code</a>, a <a href="assets/PDFs/InputCGNSPresentation.pdf" target="_blank" class="sneaky-link">presentation</a> given to engineers at RollsRoyce and ANSA, and <a href="https://doc.nektar.info/developerguide/latest/developer-guidech17.html" target="_blank" class="sneaky-link">documentation</a>.</h4>
+    {% endcall %}
   </div>
 </section>
 
@@ -28,9 +53,16 @@ extraCss: [index.css, projects.css, contact.css]
       Projects
     </h2>
 
-    <h4>Here are some of the projects I've worked on (more to be added soon). Click on the images to find out more!</h4>
+    <!-- <h4>Here are some of the projects I've worked on (more to be added soon). Click on the images to find out more!</h4> -->
 
-    {% call projectCard("fluid-sim.html", "assets/img/fluid-sim-frame.png", "project-card-img-div") %}
+    {% call projectCard("flow-reconstruction.html", "assets/img/flow-reconstruction-icon.png", "", "interactive") %}
+    <h3><a href="flow-reconstruction.html" class="sneaky-link">Flow Reconstruction</a></h3>
+    <h4>Mask out patches of a cylinder wake and watch the Vision Transformer from my <a href="masters-thesis.html" class="sneaky-link">Master's thesis</a> reconstruct the whole velocity field from whatever is left - running live in your browser.</h4>
+
+    <h4><i>Choose between the single-snapshot ViT and the temporal t-ViT, which sees the same patches across five snapshots and attends over them causally.</i></h4>
+    {% endcall %}
+
+    {% call projectCard("fluid-sim.html", "assets/img/fluid-sim-frame.png", "project-card-img-div", "interactive") %}
     <h3><a href="fluid-sim.html" class="sneaky-link">Real-time 2D Fluid Simulation</a></h3>
     <h4>Check out the theory and code behind writing a real-time fluid simulation, with comparison between a couple different implementations!</h4>
 
@@ -39,14 +71,8 @@ extraCss: [index.css, projects.css, contact.css]
     <h4><a href="https://github.com/Ben-Eze/FluidSimulator" target="_blank" class="sneaky-link">View the code on GitHub</a></h4>
     {% endcall %}
 
-    {% call projectCard("UROP.html", "assets/img/UROP-icon.png") %}
-    <h3><a href="UROP.html" class="sneaky-link">Research Project: High-order mesh generation</a></h3>
-
-    <h4>Check out the work that I did for my UROP (research project) at Imperial, working on the meshing tool NekMesh, part of the <a href="https://www.nektar.info/" class="sneaky-link">Nektar++</a> suite. This includes <a href="https://gitlab.nektar.info/nektar/nektar/-/merge_requests/1889" target="_blank" class="sneaky-link">code</a>, a <a href="assets/PDFs/InputCGNSPresentation.pdf" target="_blank" class="sneaky-link">presentation</a> given to engineers at RollsRoyce and ANSA and <a href="https://doc.nektar.info/developerguide/latest/developer-guidech17.html" target="_blank" class="sneaky-link">documentation</a>.</h4>
-    {% endcall %}
-
-    {% call projectCard("tiny-shakespeare.html", "assets/img/tiny-shakespeare-icon.png") %}
-    <h3><a href="tiny-shakespeare.html" class="sneaky-link">INTERACTIVE: Predictive Shakespeare</a></h3>
+    {% call projectCard("tiny-shakespeare.html", "assets/img/tiny-shakespeare-icon.png", "", "interactive") %}
+    <h3><a href="tiny-shakespeare.html" class="sneaky-link">Predictive Shakespeare</a></h3>
     <h4>Play around with this interactive demo, a language model trained on the entire works of Shakespeare - who knows, maybe you could write the next great classic...</h4>
 
     <h4><i>Inspired by the rapid progress in LLMs such as ChatGPT and Claude, I investigated the theory behind the transformer architecture to build a character-level language model, small enough to run in real-time on a desktop!</i></h4>
@@ -75,8 +101,8 @@ extraCss: [index.css, projects.css, contact.css]
     <a href="https://github.com/Ben-Eze/">
       <img src="assets/img/icons/Github-icon.png">
     </a>
-    <a href="https://gitlab.nektar.info/be121ic">
+    <!-- <a href="https://gitlab.nektar.info/be121ic">
       <img src="assets/img/icons/Gitlab-icon.png">
-    </a>
+    </a> -->
   </div>
 </section>

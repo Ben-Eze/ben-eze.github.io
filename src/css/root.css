@@ -26,7 +26,7 @@ section {
   margin-bottom: 3rem;
 }
 
-h1, h2, h3, h4, h5, h6, li {
+h1, h2, h3, h4, h5, h6, li, p, i {
   font-family: inherit;
   color: var(--text-colour);
 }
@@ -48,7 +48,7 @@ h3 {
   font-weight: 400;
 }
 
-h4 {
+h4, i, p {
   font-size: 1rem;
   font-weight: 400;
   padding-top: 0.3rem;
@@ -125,6 +125,7 @@ span.colors:hover {
   --text-colour2: #a8a8a8;
   --text-colour3: #919191;
   --IMPERIAL-blue: #0000cd;
+  --nav-link-gap: 3rem;
 }
 
 .sneaky-link {
@@ -150,31 +151,141 @@ span.colors:hover {
   width: 100%;
 }
 
-/* PDF embed box */
-.iframewindow{
-  margin-top: 1rem;
+/* PDF embed */
+.pdf-embed {
+  margin-top: 1.5rem;
   display: flex;
-  text-align: center;
-  justify-content: center;
+  flex-direction: column;
   height: 80vh;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  background-color: var(--codebox-colour);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.35);
 }
 
-/* PDF embed box */
-.iframepdf{
-  height: 90%;
-  width: 70%;
+.pdf-embed__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.6rem 1rem;
+  background-color: var(--tertiary-colour);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.pdf-embed__title {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-colour2);
   overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pdf-embed__open {
+  flex-shrink: 0;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--accent-colour);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: opacity 0.2s ease;
+}
+
+.pdf-embed__open:hover {
+  opacity: 0.75;
+  text-decoration: underline;
+}
+
+.pdf-embed__frame {
+  flex: 1;
+  width: 100%;
+  border: none;
+  background-color: #fff;
+}
+
+/* For a single-page document, size the box to the page's own aspect ratio
+   (rather than a fixed viewport height) so the whole page renders at its
+   natural fit-width zoom with no internal scrollbar */
+.pdf-embed--full-page {
+  height: auto;
+  aspect-ratio: 2383.92 / 3370.32; /* Research Showcase Poster page size */
+}
+
+/* Zoom-through transition into an interactive demo, driven by
+   javascript/utils/portal-link.js */
+.portal-link {
+  display: block;
+  border-radius: 0.3rem;
+  overflow: hidden;
+}
+
+.portal-link img,
+.portal-link video {
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.portal-link:hover img,
+.portal-link:hover video {
+  transform: scale(1.02);
+}
+
+/* A snapshot of the media is flown at the viewer, so only transform and
+   opacity animate and the browser can keep it on the GPU */
+.portal-flight {
+  position: fixed;
+  margin: 0;
+  z-index: 2000;
+  border-radius: 0.3rem;
+  transform-origin: center center;
+  transition: transform 0.55s cubic-bezier(0.55, 0, 0.85, 0.35),
+              opacity 0.55s ease-in,
+              border-radius 0.3s ease;
+  will-change: transform;
+}
+
+.portal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1999;
+  background-color: var(--background-colour);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.portal-backdrop.is-visible {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portal-link img,
+  .portal-link video,
+  .portal-link:hover img,
+  .portal-link:hover video {
+    transition: none;
+    transform: none;
+  }
 }
 
 /* Code */
 .code-box {
   display: flex;
-  min-width: 40rem; /* Default width */
-  width: fit-content; /* Expands if content overflows */
+  width: 100%;
   background-color: var(--codebox-colour);
-  overflow: hidden;
+  overflow: hidden; /* keeps the rounded corners clipping the scroll area */
   border-radius: 0.3rem;
-  margin: 0.5rem;
+  margin: 0.5rem 0;
+}
+
+/* Long lines scroll inside the box rather than stretching the page. The
+   min-width is needed because a flex item won't shrink below its content */
+.code-box pre {
+  flex: 1;
+  min-width: 0;
+  overflow-x: auto;
 }
 
 code {
