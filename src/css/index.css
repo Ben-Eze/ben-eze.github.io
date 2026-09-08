@@ -6,10 +6,6 @@
   padding-bottom: 1.5rem;
 }
 
-.home-intro h4 {
-  max-width: 45rem;
-}
-
 .intro-loop {
   display: grid;
   grid-template-rows: 20rem 1fr;

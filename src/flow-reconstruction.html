@@ -11,7 +11,7 @@ useMathJax: true
 <h2><i>Reconstructing a flow field from a handful of patches</i></h2>
 
 <div>
-  <h4>This is the <a href="masters-thesis.html" class="sneaky-link">Vision Transformer Masked Autoencoder</a> from my Master's thesis, running live in the browser. The model sees only the patches you leave unmasked and reconstructs the entire velocity field from them - click or drag on the middle panel to choose what it gets to see.</h4>
+  <h4>This is the <a href="masters-thesis.html" class="sneaky-link">Vision Transformer Masked Autoencoder</a> from my Master's thesis, running live in the browser. The model sees only the patches you make visible and reconstructs the entire velocity field from them - click or drag on the middle panel to choose what it gets to see.</h4>
 
   <div class="flow-demo" id="flow-demo">
     <div class="flow-demo__controls">
@@ -76,12 +76,14 @@ useMathJax: true
   <script src="javascript/flow-reconstruction.js"></script>
 
   <h3>What the model is doing</h3>
-  <h4>The snapshot is a <span class="latex">\( 96 \times 192 \)</span> field of velocity components <span class="latex">\( (u, v) \)</span> from the wake behind two cylinders, cut into a <span class="latex">\( 4 \times 8 \)</span> grid of <span class="latex">\( 24 \times 24 \)</span> patches. Only the unmasked patches are embedded and passed through the encoder - the masked positions are not fed in at all, which is what makes the encoder cheap regardless of how much you hide. Before decoding, the encoded tokens are scattered back to their positions and every masked slot is filled with a single learned mask token, so the decoder reconstructs all 32 patches from a mixture of real evidence and learned prior. The output panel pastes the patches the model was given back over its own version of them, so everything you see there that is not simply the input is a prediction.</h4>
+  <h4>The snapshot is a <span class="latex">\( 96 \times 192 \)</span> field of velocity components <span class="latex">\( (u, v) \)</span> from the wake behind two adjacent cylinders, cut into a <span class="latex">\( 4 \times 8 \)</span> grid of <span class="latex">\( 24 \times 24 \)</span> patches. The flow state in the visible region and the position of these patches are embedded and passed through the <i>encoder</i> transformer, allowing the model to process the available information. The <i>decoder</i> transformer then works to fill in the gaps, figuring out what is in the missing regions. </h4>
 
-  <h4>With the default 25% pattern the model is working from two columns of patches, and it still recovers the vortex street downstream of them - the wake is highly structured, and the attention maps learn where that structure comes from. Mask everything and the output collapses towards the mean flow, which is the honest answer when there is no evidence to condition on.</h4>
+  <h4>With the default 25% pattern the model is working from two columns of patches, and it still recovers the vortex street downstream of them - the wake is highly structured, and the attention maps learn where that structure comes from.</h4>
+
+  <h4>To read more about the theory, read my thesis <a href="masters-thesis.html" class="sneaky-link" target="_blank">here</a>.</h4>
 
   <h3>ViT vs t-ViT</h3>
-  <h4>The <b>ViT</b> sees a single snapshot. The <b>t-ViT</b> instead sees the same patches across five snapshots spaced ten steps apart, ending at the one shown, and attends over them block-causally - each timestep can attend to itself and to earlier ones, but not to the future. It reconstructs every step in that window; the panel shows the last. The extra temporal context is what lets it disambiguate flow states that look identical in a single frame but are moving differently, which was the remedy proposed in the thesis for the intermittent loss spikes the single-frame model suffers from.</h4>
+  <h4>The <b>ViT</b> sees a single snapshot. The <b>t-ViT</b> instead sees the same patches across <span class="latex">\( N \)</span> snapshots spaced <span class="latex">\( \Delta t \)</span> steps apart (here <span class="latex">\( N=5, \Delta t = 10 \)</span>), ending at the one shown, and attends over them causally - each timestep can only attend to itself and to earlier ones, but not to the future. The extra temporal context lets the model disambiguate flow states that look almost identical in a single frame - time is an important component of the Navier Stokes equations that cannot be ignored.</h4>
 
   <h4>Both models run entirely in your browser via <a href="https://onnxruntime.ai/docs/tutorials/web/" class="sneaky-link" target="_blank">ONNX Runtime Web</a> - nothing is sent to a server. They are quantised to int8 to keep the download reasonable, so the reconstruction is very slightly noisier than the full-precision model reported in the thesis.</h4>
 </div>
